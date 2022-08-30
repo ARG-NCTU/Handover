@@ -1,28 +1,28 @@
-cmd "vx300s_setup" {
-    exec = "roslaunch dualarm_bringup dualarm_control.launch";
-    host = "localhost";
-}
-group "00_handover" {   
-    cmd "handover_server" {
-        exec = "roslaunch handover handover_server.launch";
-        host = "localhost";
-    }
-    cmd "handover_client" {
-        exec = "roslaunch handover handover_client.launch";
-        host = "localhost";
-    }
-    
-}
-
-group "01_sensor" {   
+group "00_sensor_robot" {   
     cmd "01_camera" {
         exec = "roslaunch dualarm_bringup dual_camera.launch";
         host = "localhost";
     }
-    cmd "01_force_sensor" {
+    cmd "02_vx300s_setup" {
+        exec = "roslaunch dualarm_bringup dualarm_control.launch";
+        host = "localhost";
+    }
+    cmd "03_force_sensor" {
         exec = "roslaunch robotiq_ft_sensor ft_sensor.launch";
         host = "localhost";
     }
+    
+}
+group "01_handover" {   
+    cmd "01_handover_server" {
+        exec = "roslaunch handover handover_server.launch";
+        host = "localhost";
+    }
+    cmd "02_handover_client" {
+        exec = "roslaunch handover handover_client.launch";
+        host = "localhost";
+    }
+    
 }
 
 cmd "Rviz" {

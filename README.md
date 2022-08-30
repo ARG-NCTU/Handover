@@ -22,6 +22,11 @@ $ source Docker/nuc/docker_run.sh
 
 ## How to Start
 
+### Open Procman
+```
+$ source start_project.sh
+```
 ### Camera and ViperX300s
-
+Restart 00_sensor on NUC
 ### Handover server and client
+Restart 01_handover on workstation
