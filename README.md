@@ -6,12 +6,12 @@
 $ git clone --recursive git@github.com:ARG-NCTU/Handover.git
 $ cd Handover
 ```
-### Download HANet
+### Download HANet pretrianed-weight
 ```
 $ source model_download.sh
 ```
 ### Docker
-On GPU workstation
+On GPU workstation, run HANet prediction
 ```
 $ source Docker/gpu/docker_run.sh gpu
 ```
@@ -22,7 +22,7 @@ $ source Docker/nuc/docker_run.sh
 
 ## How to Start
 
-### Open Procman
+### Start Procman
 ```
 $ source start_project.sh
 ```
