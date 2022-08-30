@@ -1,0 +1,6 @@
+[submodule "catkin_ws/src/sensor"]
+	path = catkin_ws/src/sensor
+	url = git@github.com:ARG-NCTU/sensor.git
+[submodule "catkin_ws/src/smach-pyrobot"]
+	path = catkin_ws/src/smach-pyrobot
+	url = git@github.com:Sensing-Intelligent-System/smach-pyrobot.git
