@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- connect left camera -->
+    <include file="$(find realsense2_camera)/launch/rs_rgbd.launch">
+            <arg name="serial_no"           default="832112073381"/>
+            <arg name="camera"              default="camera_left"/>
+    </include>
+
+    <!-- connect right camera -->
+    <include file="$(find realsense2_camera)/launch/rs_rgbd.launch">
+            <arg name="serial_no"           default="937622072048"/>  <!-- 828112072428 937622072048-->
+            <arg name="camera"              default="camera_right"/>
+            <!-- <arg name="depth_width"         default="1280"/>
+            <arg name="depth_height"        default="720"/>
+            <arg name="depth_fps"           value="30"/>
+            <arg name="color_width"         default="1280"/>
+            <arg name="color_height"        default="720"/>
+            <arg name="color_fps"           value="30"/> -->
+    </include>
+    
+    <node pkg="tf" type="static_transform_publisher" name="calibrate_link_right" 
+        args="-0.047 0 0.085 0 0.199 0 0.980 right_arm/ee_arm_link camera_right_link 100" />
+
+    <node pkg="tf" type="static_transform_publisher" name="cam_2_cam" 
+        args="0.677 -0.839 -0.018 0 0 0.707 0.707 camera_mid_link camera_left_link 100" />
+
+    <!-- connect mid camera -->
+    <include file="$(find realsense2_camera)/launch/rs_rgbd.launch">
+            <arg name="serial_no"           default="934222071319"/>
+            <arg name="camera"              default="camera_mid"/>
+    </include>
+
+    <node pkg="nodelet" type="nodelet" name="pcl_manager" args="manager" output="screen" />
+    <!-- Run a VoxelGrid filter to clean NaNs and downsample the data -->
+    <node pkg="nodelet" type="nodelet" name="voxel_grid" args="load pcl/VoxelGrid pcl_manager" output="screen">
+        <remap from="~input" to="/camera_mid/depth_registered/points" />
+        <remap from="~output" to="/mid_pc" />
+        <rosparam>
+            filter_field_name: z
+            filter_limit_min: 0.1
+            filter_limit_max: 0.8
+            filter_limit_negative: False
+            leaf_size: 0.004
+        </rosparam>
+    </node>
+    <node pkg="nodelet" type="nodelet" name="voxel_grid2" args="load pcl/VoxelGrid pcl_manager" output="screen">
+        <remap from="~input" to="/left_pc" />
+        <remap from="~output" to="/left_pc_final" />
+        <rosparam>
+            filter_field_name: x
+            filter_limit_min: -0.3
+            filter_limit_max: 0.3
+            filter_limit_negative: False
+            leaf_size: 0.004
+        </rosparam>
+    </node>
+    <node pkg="nodelet" type="nodelet" name="voxel_grid_left" args="load pcl/VoxelGrid pcl_manager" output="screen">
+        <remap from="~input" to="/camera_left/depth_registered/points" />
+        <remap from="~output" to="/left_pc" />
+        <rosparam>
+            filter_field_name: z
+            filter_limit_min: 0.1
+            filter_limit_max: 0.9
+            filter_limit_negative: False
+            leaf_size: 0.004
+        </rosparam>
+    </node>
+    <node pkg="nodelet" type="nodelet" name="voxel_grid_right" args="load pcl/VoxelGrid pcl_manager" output="screen">
+        <remap from="~input" to="/camera_right/depth_registered/points" />
+        <remap from="~output" to="/right_pc" />
+        <rosparam>
+            filter_field_name: z
+            filter_limit_min: 0.12
+            filter_limit_max: 0.6
+            filter_limit_negative: False
+            leaf_size: 0.004
+        </rosparam>
+    </node>
+
+    <!-- <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch"/> -->
+
+    <!-- <include file="$(find hand_eye_calibration)/launch/auscultation_point.launch"/> -->
+
+</launch>

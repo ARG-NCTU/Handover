@@ -1,0 +1,27 @@
+group "00_handover" {   
+    cmd "handover_server" {
+        exec = "roslaunch handover handover_server.launch";
+        host = "localhost";
+    }
+    cmd "handover_client" {
+        exec = "roslaunch handover handover_client.launch";
+        host = "localhost";
+    }
+    
+}
+
+group "01_force_sensor" {   
+    cmd "01_vx300s_setup" {
+        exec = "roslaunch robotiq_ft_sensor ft_sensor.launch";
+        host = "localhost";
+    }
+}
+
+cmd "Rviz" {
+    exec = "rviz -d rviz/rviz.rviz";
+    host = "localhost";
+}
+
+script "start_project" {
+
+}
