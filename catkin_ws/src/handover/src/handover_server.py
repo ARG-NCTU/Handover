@@ -4,7 +4,6 @@ from re import sub
 import rospy
 import time
 import sys
-import argparse
 import cv2
 import random
 import numpy as np
