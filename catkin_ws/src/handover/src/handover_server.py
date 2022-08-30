@@ -98,8 +98,7 @@ class HandoverServer:
              = 4 : Check_dis
              = 5 : Wait_object
              = 6 : Single detect
-             = 7 : Waypoint
-             = 8 : User actively give
+             = 7 : User actively give
         """
 
     def get_pose(self):
@@ -327,10 +326,37 @@ class HandoverServer:
         elif msg.goal == 2:
             start = self.get_pose()
             rospy.loginfo('Go Target...')
-            action = self.go_target()
+
+            # ---------------- Waypoint ---------------- 
+            listener = TransformListener()
+            transformer = TransformerROS()
+            listener.waitForTransform('right_arm/base_link', 'right_arm/ee_arm_link', rospy.Time(0), rospy.Duration(1.0))
+            (trans, rot) = listener.lookupTransform('right_arm/base_link', 'right_arm/ee_arm_link', rospy.Time(0))
+            c_pose = ee_poseRequest()
+            c_pose.target_pose.position.x = trans[0]
+            c_pose.target_pose.position.y = trans[1]
+            c_pose.target_pose.position.z = trans[2]
+
+            c_pose_list = [trans[0], trans[1], trans[2], rot[0], rot[1], rot[2], rot[3]]
+            targetpose_list = [self.target.target_pose.position.x, self.target.target_pose.position.y, self.target.target_pose.position.z, self.target.target_pose.orientation.x, self.target.target_pose.orientation.y, self.target.target_pose.orientation.z, self.target.target_pose.orientation.w]
+            waypoint_list = waypoint(c_pose_list, targetpose_list)
+
+            for sub_pose in waypoint_list:
+                goal_pose = ee_poseRequest()
+                goal_pose.target_pose.position.x = sub_pose[0]
+                goal_pose.target_pose.position.y = sub_pose[1]
+                goal_pose.target_pose.position.z = sub_pose[2]
+                goal_pose.target_pose.orientation.x = sub_pose[3]
+                goal_pose.target_pose.orientation.y = sub_pose[4]
+                goal_pose.target_pose.orientation.z = sub_pose[5]
+                goal_pose.target_pose.orientation.w = sub_pose[6]
+
+                self.target = go_pose
+
+                action = self.go_target()
+            # ---------------- Waypoint ----------------
 
             stop = self.get_pose()
-            print(stop.target_pose.position.x,start.target_pose.position.x)
 
             if round(stop.target_pose.position.x,2) == round(start.target_pose.position.x,2):
                 self.count += 1
@@ -416,40 +442,8 @@ class HandoverServer:
             else:
                 self._sas.set_aborted()
 
-        # Waypoint
-        elif msg.goal == 7:
-            listener = TransformListener()
-            transformer = TransformerROS()
-            listener.waitForTransform('right_arm/base_link', 'right_arm/ee_arm_link', rospy.Time(0), rospy.Duration(1.0))
-            (trans, rot) = listener.lookupTransform('right_arm/base_link', 'right_arm/ee_arm_link', rospy.Time(0))
-            c_pose = ee_poseRequest()
-            c_pose.target_pose.position.x = trans[0]
-            c_pose.target_pose.position.y = trans[1]
-            c_pose.target_pose.position.z = trans[2]
-
-            c_pose_list = [trans[0], trans[1], trans[2], rot[0], rot[1], rot[2], rot[3]]
-            targetpose_list = [self.target.target_pose.position.x, self.target.target_pose.position.y, self.target.target_pose.position.z, self.target.target_pose.orientation.x, self.target.target_pose.orientation.y, self.target.target_pose.orientation.z, self.target.target_pose.orientation.w]
-            waypoint_list = waypoint(c_pose_list, targetpose_list)
-
-            for sub_pose in waypoint_list:
-                goal_pose = ee_poseRequest()
-                goal_pose.target_pose.position.x = sub_pose[0]
-                goal_pose.target_pose.position.y = sub_pose[1]
-                goal_pose.target_pose.position.z = sub_pose[2]
-                goal_pose.target_pose.orientation.x = sub_pose[3]
-                goal_pose.target_pose.orientation.y = sub_pose[4]
-                goal_pose.target_pose.orientation.z = sub_pose[5]
-                goal_pose.target_pose.orientation.w = sub_pose[6]
-                try:
-                    go_pose = rospy.ServiceProxy("/{0}/go_pose".format(self.arm), ee_pose)
-                    resp = go_pose(goal_pose)
-                except rospy.ServiceException as exc:
-                    print("service did not process request: " + str(exc))
-            
-            self._sas.set_succeeded()
-
         # User actively give
-        elif msg.goal == 8:
+        elif msg.goal == 7:
             for _ in range(2-self.count):
                 try:
                     go_pose = rospy.ServiceProxy("/{0}/forward".format('right_arm'), Trigger)
