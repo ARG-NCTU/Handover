@@ -22,6 +22,6 @@ $ source Docker/nuc/docker_run.sh
 
 ## How to Start
 
-### Starting camera and ViperX300s
+### Camera and ViperX300s
 
-### Starting Handover server and client
+### Handover server and client
