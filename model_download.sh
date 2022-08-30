@@ -10,7 +10,7 @@ fi
 
 cd $cwd/model
 
-# Andy Zeng ConvNet
+# HANet pretrained-weight
 echo "Download HANet pretrained weight"
 echo "111111" | sudo -S gdown --id 1uB8HLrW0gnOQVXYd2DevbKjMtPLCUAjv
 
