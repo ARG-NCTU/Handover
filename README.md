@@ -3,7 +3,7 @@
 ## Setup
 ### Hardware setup
 This system include two computing units, "nuc" for robot arm controlling and sensors, "WS" for HANet inference and handover server and client which has gpu device. 
-|Device   | Use  | GPU  | IP                                                                                                         |
+|Device   | Usage  | GPU  | IP                                                                                                         |
 |:---------:|:------------------:|:---------------:|:--------------------------------------------------------------------------------------------------------------------:|
 |NUC  | Robot and sensor contorl              | No           | 192.168.50.185  |
 |WS  | HANet Inference and Handover state machine              | Yes           | 192.168.50.161  |
