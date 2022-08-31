@@ -697,7 +697,7 @@ class HANet(nn.Module):
         if pretrained == True:
             self.net = self.FCN_model(n_classes=4)
             # model_path = get_model()
-            self.net.load_state_dict(torch.load('/home/dualarm/Handover/model/HANet.pth'))
+            self.net.load_state_dict(torch.load('/home/dualarm/handover-system/model/HANet.pth'))
             print('Load pretrained complete')
         else:
             self.net = self.FCN_model(n_classes=n_class)
