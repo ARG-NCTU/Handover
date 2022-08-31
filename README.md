@@ -1,13 +1,13 @@
-# Handover
+# Handover system
 
 ## Setup
-### System Diagram
+### Hardware
 ![Teaser](material/system-diagram.png)
 
 ### Clone repo
 ```
-$ git clone --recursive git@github.com:ARG-NCTU/Handover.git
-$ cd Handover
+$ git clone --recursive git@github.com:ARG-NCTU/handover_affordance.git
+$ cd handover_affordance
 ```
 
 ### Docker
@@ -25,6 +25,13 @@ $ source Docker/nuc/docker_run.sh
 ### Download HANet pretrianed-weight
 ```
 docker $ source model_download.sh
+```
+### Make workspace
+```
+docker $ source environment.sh nuc_IP WS_IP
+```
+```
+docker $ source catkin_make.sh
 ```
 
 ### Start Procman
