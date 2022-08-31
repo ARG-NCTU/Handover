@@ -26,6 +26,13 @@ $ source Docker/nuc/docker_run.sh
 ```
 docker $ source model_download.sh
 ```
+### Make
+```
+docker $ source environment.sh nuc_IP WS_IP
+```
+```
+docker $ source catkin_make.sh
+```
 
 ### Start Procman
 ```
