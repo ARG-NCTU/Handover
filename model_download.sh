@@ -12,6 +12,6 @@ cd $cwd/model
 
 # HANet pretrained-weight
 echo "Download HANet pretrained weight"
-echo "111111" | sudo -S gdown --id 1uB8HLrW0gnOQVXYd2DevbKjMtPLCUAjv
+gdown --id 1uB8HLrW0gnOQVXYd2DevbKjMtPLCUAjv
 
 cd ..
