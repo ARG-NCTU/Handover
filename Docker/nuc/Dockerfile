@@ -138,6 +138,7 @@ RUN pip3 install \
     seaborn \
     easydict \
     lmdb \  
+    modern-robotics \
     shapely
 
 ##################################### PIP2 ######################################
