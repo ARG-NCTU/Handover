@@ -1,10 +1,10 @@
 group "00_sensor_robot" {   
     cmd "01_camera" {
-        exec = "roslaunch dualarm_bringup dual_camera.launch";
+        exec = "roslaunch multi_view_camera triple_camera.launch";
         host = "localhost";
     }
     cmd "02_vx300s_setup" {
-        exec = "roslaunch dualarm_bringup dualarm_control.launch";
+        exec = "roslaunch arm_control arm_control.launch";
         host = "localhost";
     }
     cmd "03_force_sensor" {
