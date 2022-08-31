@@ -1,6 +1,9 @@
 # Handover
 
 ## Setup
+### System Diagram
+![Teaser](material/system-diagram.png)
+
 ### Clone repo
 ```
 $ git clone --recursive git@github.com:ARG-NCTU/Handover.git
