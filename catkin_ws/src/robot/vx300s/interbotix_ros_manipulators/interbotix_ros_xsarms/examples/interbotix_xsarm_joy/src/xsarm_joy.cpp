@@ -256,8 +256,8 @@ int main(int argc, char **argv)
     cntlr = ps3;
   else
     cntlr = ps4;
-  ros::Subscriber sub_joy_raw = n.subscribe("commands/joy_raw", 10, joy_state_cb);
-  pub_joy_cmd = n.advertise<interbotix_xsarm_joy::ArmJoy>("commands/joy_processed", 10);
+  ros::Subscriber sub_joy_raw = n.subscribe("commands/joy_raw", 1, joy_state_cb);
+  pub_joy_cmd = n.advertise<interbotix_xsarm_joy::ArmJoy>("commands/joy_processed", 1);
   ros::spin();
   return 0;
 }

@@ -3,7 +3,7 @@
 
     <!-- parameter -->
     <arg name="robot_name"         default="vx300s" />
-    <arg name="port"               default="/dev/ttyUSB0" />
+    <arg name="port"               default="/dev/ttyUSB1" />
     <arg name="use_rviz"           default="true"/>
     <param name="/robot_name"      value="$(arg robot_name)" />
 
@@ -13,6 +13,7 @@
             <arg name="port"            value="$(arg port)" />
             <arg name="robot_name"      value="$(arg robot_name)" />
             <arg name="use_rviz"        value="$(arg use_rviz)" />
+            <arg name="wrist_rotation_length"        value="0.0" />
     </include>
 
     <node pkg="vx300s_bringup" type="vx300s_control.py" name="vx300s_control_node" />

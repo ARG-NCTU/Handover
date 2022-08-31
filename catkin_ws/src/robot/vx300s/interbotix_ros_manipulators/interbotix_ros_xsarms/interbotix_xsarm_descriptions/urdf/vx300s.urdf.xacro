@@ -9,8 +9,10 @@
   <xacro:arg name="use_world_frame" default="false"/>
   <xacro:arg name="external_urdf_loc" default=""/>
   <xacro:arg name="load_gazebo_configs" default="false"/>
+  <xacro:arg name="wrist_rotation_length" default="0.0"/>
 
   <xacro:property name="urdf_loc" value="$(arg external_urdf_loc)"/>
+  <xacro:property name="rotation_length" value="$(arg wrist_rotation_length)"/>
   <xacro:property name="pi_offset" value="0.00001"/>
 
   <xacro:if value="$(arg load_gazebo_configs)">
@@ -253,7 +255,7 @@
   <joint name="wrist_rotate" type="revolute">
     <axis xyz="1 0 0"/>
     <limit effort="1" lower="${-pi + pi_offset}" upper="${pi - pi_offset}" velocity="${pi}"/>
-    <origin rpy="0 0 0" xyz="0.069744 0 0"/>
+    <origin rpy="0 0 0" xyz="${0.069744 + rotation_length} 0 0"/>
     <parent link="$(arg robot_name)/wrist_link"/>
     <child link="$(arg robot_name)/gripper_link"/>
     <dynamics friction="0.1"/>

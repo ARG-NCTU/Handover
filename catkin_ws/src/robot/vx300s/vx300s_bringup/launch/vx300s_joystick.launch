@@ -3,7 +3,7 @@
 
     <!-- parameter -->
     <arg name="robot_name"         default="vx300s" />
-    <arg name="port"               default="/dev/ttyUSB0" />
+    <arg name="port"               default="/dev/ttyUSB1" />
     <arg name="joystick"           default="/dev/input/js0" />
     <arg name="use_rviz"           default="true"/>
     <arg name="threshold"          default="0.75"/>

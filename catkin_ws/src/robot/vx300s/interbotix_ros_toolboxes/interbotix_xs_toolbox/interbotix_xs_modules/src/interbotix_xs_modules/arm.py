@@ -125,7 +125,9 @@ class InterbotixArmXSInterface(object):
     def set_joint_positions(self, joint_positions, moving_time=None, accel_time=None, blocking=True):
         if (self.check_joint_limits(joint_positions)):
             self.publish_positions(joint_positions, moving_time, accel_time, blocking)
+            print('YES!!!!!!!!!!!!')
         else:
+            print('NO!!!!!!!!!!!!')
             return False
 
     ### @brief Command the arm to go to its Home pose
