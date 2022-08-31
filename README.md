@@ -41,7 +41,6 @@ docker $ source start_project.sh
 ![Teaser](material/procman.png)
 ### Camera and ViperX300s
 Restart 00_sensor_robot on NUC
-![Teaser](material/procman_00.png)
+
 ### Handover server and client
 Restart 01_handover on workstation
-![Teaser](material/procman_01.png)
