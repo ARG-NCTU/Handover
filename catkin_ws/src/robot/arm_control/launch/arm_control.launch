@@ -7,29 +7,42 @@
     <param name="/right"          value="$(arg right_arm)" />
     <param name="/left"           value="$(arg left_arm)" />
 
+    <!-- connect left vx300s -->
+    <!-- <include file="$(find interbotix_xsarm_control)/launch/xsarm_control.launch">
+            <arg name="robot_model"     value="vx300s" />
+            <arg name="port"            value="/dev/ttyUSB1" />
+            <arg name="robot_name"      value="$(arg left_arm)" />
+            <arg name="use_world_frame" value="false" />
+            <arg name="use_rviz"        value="false" />
+            <arg name="wrist_rotation_length"        value="0.085" />
+    </include> -->
+
     <!-- connect right vx300s -->
     <include file="$(find interbotix_xsarm_control)/launch/xsarm_control.launch">
             <arg name="robot_model"     value="vx300s" />
             <arg name="port"            value="/dev/ttyUSB0" />
             <arg name="robot_name"      value="$(arg right_arm)" />
+            <arg name="use_world_frame" value="false" />
             <arg name="use_rviz"        value="false" />
+            <arg name="use_sim"         value="false" />
+            <arg name="wrist_rotation_length"        value="0.1225" />
     </include>
 
-    <!-- connect left vx300s -->
-    <include file="$(find interbotix_xsarm_control)/launch/xsarm_control.launch">
-            <arg name="robot_model"     value="vx300s" />
-            <arg name="port"            value="/dev/ttyUSB1" />
-            <arg name="robot_name"      value="$(arg left_arm)" />
-            <arg name="use_rviz"        value="false" />
-    </include>
-
-    <node pkg="arm_control" type="arm_control.py" name="dualarm_control_node" />
+    <node pkg="dualarm_bringup" type="dualarm_control.py" output="screen" name="dualarm_control_node" />
 
     <!-- hand eye calibration -->
-    <node pkg="tf" type="static_transform_publisher" name="arm0_tf" 
-    args="0.379466 -0.001393 0.643495 0.711868 -0.011059 -0.702226 -0.000907 right_arm/base_link camera_link 100"/>
+    <node pkg="tf" type="static_transform_publisher" name="arm2_tf" 
+    args="-0.125 0.505 0.31 0 0 0 1 right_arm/base_link camera_mid_link 100"/>
 
-    <node pkg="tf" type="static_transform_publisher" name="arm1_tf" 
-    args="0.798555 -0.0082965 0.0282185 -0.0415483 -0.000638724 0.999136 0.0005825 right_arm/base_link left_arm/base_link 100"/>
+    <!-- right arm finger -->
+    <node pkg="tf" type="static_transform_publisher" name="right_finger_end" args="0.125 -0.06 0 0 0 0 1.0 right_arm/ee_arm_link right_arm/right_finger_end 100" />
+
+    <node pkg="tf" type="static_transform_publisher" name="right_finger_root" args="0.03 -0.06 0 0 0 0 1.0 right_arm/ee_arm_link right_arm/right_finger_root 100" />
+
+    <node pkg="tf" type="static_transform_publisher" name="left_finger_end" args="0.125 0.06 0 0 0 0 1.0 right_arm/ee_arm_link right_arm/left_finger_end 100" />
+
+    <node pkg="tf" type="static_transform_publisher" name="left_finger_root" args="0.03 0.06 0 0 0 0 1.0 right_arm/ee_arm_link right_arm/left_finger_root 100" />
+
+    <node pkg="rosserial_python" type="serial_node.py" name="serial_node" args="/dev/ttyACM0" />
 
 </launch>

@@ -26,6 +26,62 @@ RUN echo "${USER}:111111" | chpasswd
 ###################################### basic tools #####################################
 RUN apt-key adv --keyserver 'hkp://keyserver.ubuntu.com:80' --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654
 
+RUN apt-get -o Acquire::ForceIPv4=true update && apt-get -o Acquire::ForceIPv4=true install --no-install-recommends -y \
+    ros-$ROS_DISTRO-desktop-full \
+    ros-$ROS_DISTRO-serial \
+    ros-$ROS_DISTRO-soem \
+    ros-$ROS_DISTRO-openslam-gmapping \
+    ros-$ROS_DISTRO-geodesy \
+    ros-$ROS_DISTRO-cartographer-* \
+    ros-$ROS_DISTRO-ddynamic-reconfigure \
+    ros-$ROS_DISTRO-perception \
+    ros-$ROS_DISTRO-rgbd-launch \
+    ros-$ROS_DISTRO-joystick-drivers \
+    ros-$ROS_DISTRO-pointcloud-to-laserscan \
+    ros-$ROS_DISTRO-robot-localization \
+    ros-$ROS_DISTRO-spacenav-node \
+    ros-$ROS_DISTRO-tf2-sensor-msgs \
+    ros-$ROS_DISTRO-controller-manager \
+    ros-$ROS_DISTRO-twist-mux \
+    ros-$ROS_DISTRO-velodyne-simulator \
+    ros-$ROS_DISTRO-gazebo-ros \
+    ros-$ROS_DISTRO-move-base-msgs \
+    ros-$ROS_DISTRO-lms1xx \
+    ros-$ROS_DISTRO-rviz-imu-plugin \
+    ros-$ROS_DISTRO-interactive-marker-twist-server \
+    ros-$ROS_DISTRO-teleop-twist-joy \
+    ros-$ROS_DISTRO-rosserial-arduino \
+    ros-$ROS_DISTRO-rosserial \
+    ros-$ROS_DISTRO-socketcan-interface \
+    ros-$ROS_DISTRO-moveit \
+    ros-$ROS_DISTRO-moveit-planners-ompl \
+    ros-$ROS_DISTRO-moveit-* \
+    ros-$ROS_DISTRO-ur-* \
+    ros-$ROS_DISTRO-velocity-controllers \
+    ros-$ROS_DISTRO-joint-state-controller \
+    ros-$ROS_DISTRO-joint-trajectory-controller \
+    ros-$ROS_DISTRO-gazebo-ros-control \
+    ros-$ROS_DISTRO-geographic-msgs \
+    ros-$ROS_DISTRO-force-torque-sensor-controller \
+    ros-$ROS_DISTRO-industrial-msgs \
+    ros-$ROS_DISTRO-effort-controllers \
+    ros-$ROS_DISTRO-dynamixel-workbench-toolbox \
+    ros-$ROS_DISTRO-smach \
+    ros-$ROS_DISTRO-smach-msgs \
+    ros-$ROS_DISTRO-smach-ros \
+    ros-$ROS_DISTRO-executive-smach \
+    ros-$ROS_DISTRO-smach-viewer \
+    ros-$ROS_DISTRO-roboticsgroup-upatras-gazebo-plugins \
+    ros-$ROS_DISTRO-apriltag-ros \
+    python-rosdep \
+    python-rosinstall \
+    python-rosinstall-generator \
+    python-wstool \
+    && rm -rf /var/lib/apt/lists/*
+
+# RUN rosdep init \
+#     && rosdep update
+
 RUN apt-get -o Acquire::ForceIPv4=true update && apt-get -yq dist-upgrade \
     && apt-get -o Acquire::ForceIPv4=true install -yq --no-install-recommends \
     locales \
@@ -127,6 +183,30 @@ RUN apt-get update && apt-get install -y \
     ros-melodic-smach-ros \
     ros-melodic-executive-smach \
     ros-melodic-smach-viewer
+
+######################################## realsense ########################################
+
+RUN apt-get update && apt-get install -y \
+    libsuitesparse-dev\
+    software-properties-common \
+    libusb-1.0-0-dev \
+    libx11-dev \
+    xorg-dev \
+    libgl1-mesa-dev \
+    libglu1-mesa-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# set the version of the realsense library
+ENV LIBREALSENSE_VERSION 2.36.0
+RUN wget https://github.com/IntelRealSense/librealsense/archive/v${LIBREALSENSE_VERSION}.tar.gz && \
+    tar -xvzf v${LIBREALSENSE_VERSION}.tar.gz && \
+    rm v${LIBREALSENSE_VERSION}.tar.gz && \
+    mkdir -p librealsense-${LIBREALSENSE_VERSION}/build && \
+    cd librealsense-${LIBREALSENSE_VERSION}/build && \
+    cmake .. && \
+    make && \
+    make install && \
+    rm -rf librealsense-${LIBREALSENSE_VERSION}
 
 ##################################### setting #####################################
 
