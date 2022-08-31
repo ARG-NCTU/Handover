@@ -7,16 +7,6 @@
     <param name="/right"          value="$(arg right_arm)" />
     <param name="/left"           value="$(arg left_arm)" />
 
-    <!-- connect left vx300s -->
-    <!-- <include file="$(find interbotix_xsarm_control)/launch/xsarm_control.launch">
-            <arg name="robot_model"     value="vx300s" />
-            <arg name="port"            value="/dev/ttyUSB1" />
-            <arg name="robot_name"      value="$(arg left_arm)" />
-            <arg name="use_world_frame" value="false" />
-            <arg name="use_rviz"        value="false" />
-            <arg name="wrist_rotation_length"        value="0.085" />
-    </include> -->
-
     <!-- connect right vx300s -->
     <include file="$(find interbotix_xsarm_control)/launch/xsarm_control.launch">
             <arg name="robot_model"     value="vx300s" />
@@ -28,7 +18,7 @@
             <arg name="wrist_rotation_length"        value="0.1225" />
     </include>
 
-    <node pkg="dualarm_bringup" type="dualarm_control.py" output="screen" name="dualarm_control_node" />
+    <node pkg="arm_control" type="arm_control_.py" output="screen" name="arm_control_node" />
 
     <!-- hand eye calibration -->
     <node pkg="tf" type="static_transform_publisher" name="arm2_tf" 
