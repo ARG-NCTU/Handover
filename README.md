@@ -1,7 +1,7 @@
 # Handover system
 
 ## Setup
-### System Diagram
+### Hardware
 ![Teaser](material/system-diagram.png)
 
 ### Clone repo
