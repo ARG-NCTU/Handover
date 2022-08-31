@@ -6,8 +6,8 @@
 
 ### Clone repo
 ```
-$ git clone --recursive git@github.com:ARG-NCTU/Handover.git
-$ cd Handover
+$ git clone --recursive git@github.com:ARG-NCTU/handover_affordance.git
+$ cd handover_affordance
 ```
 
 ### Docker
