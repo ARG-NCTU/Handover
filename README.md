@@ -12,7 +12,7 @@ This system include two computing units, "nuc" for robot arm controlling and sen
 
 ### Clone repo
 ```
-$ git clone --recursive git@github.com:ARG-NCTU/handover_affordance.git
+$ git clone --recursive git@github.com:ARG-NCTU/handover-system.git
 $ cd handover-system
 ```
 
