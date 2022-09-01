@@ -149,6 +149,7 @@ RUN pip2 install pyquaternion \
     lmdb \
     easydict \
     colour \
+    modern-robotics \
     shapely
 
 ####################################### procman ###########################################
