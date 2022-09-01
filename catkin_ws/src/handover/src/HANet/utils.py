@@ -186,7 +186,7 @@ class Affordance_predict():
         self.net = HANet()
         self.Mode = Mode
         if self.Mode == 'handover':
-            self.net.load_state_dict(torch.load(self.path+'/src/HANet/HANet_VALk.pth'))
+            self.net.load_state_dict(torch.load(self.path+'/src/HANet/HANet.pth'))
             self.A = [90,45,0,-45]
             rospy.loginfo('Handover Mode')
         else:
