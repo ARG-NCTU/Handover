@@ -22,6 +22,14 @@ group "01_handover" {
         exec = "roslaunch handover handover_client.launch";
         host = "localhost";
     }
+    cmd "03_handover_cl_client" {
+        exec = "roslaunch handover handover_cl_client.launch";
+        host = "localhost";
+    }
+    cmd "04_handover_simple_client" {
+        exec = "roslaunch handover handover_simple_client.launch";
+        host = "localhost";
+    }
     
 }
 

@@ -1,7 +1,7 @@
 #! /bin/bash
-mkdir /home/dualarm/Pick-and-Place-with-RL/exp2/
+mkdir /home/dualarm/handover-system/bags/
 
-rosbag record -o /home/dualarm/Pick-and-Place-with-RL/exp2/ \
+rosbag record -o /home/dualarm/handover-system/bags/ \
     /camera_left/aligned_depth_to_color/image_raw/compressed \
     /camera_left/aligned_depth_to_color/camera_info \
     /camera_left/color/camera_info \

@@ -1,0 +1,4 @@
+<?xml version="1.0" ?>
+<launch>
+	<node pkg="handover" type="handover_cl_client.py" name="handover_cl_client" output="screen"/>
+</launch>

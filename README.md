@@ -1,13 +1,19 @@
 # Handover system
 
 ## Setup
-### Hardware
+### Hardware setup
+This system include two computing units, "nuc" for robot arm controlling and sensors, "WS" for HANet inference and handover server and client which has gpu device. 
+|Device   | Usage  | GPU  | IP                                                                                                         |
+|:---------:|:------------------:|:---------------:|:--------------------------------------------------------------------------------------------------------------------:|
+|NUC  | Robot and sensor contorl              | No           | 192.168.50.185  |
+|WS  | HANet Inference and Handover state machine              | Yes           | 192.168.50.161  |
+
 ![Teaser](material/system-diagram.png)
 
 ### Clone repo
 ```
-$ git clone --recursive git@github.com:ARG-NCTU/handover_affordance.git
-$ cd handover_affordance
+$ git clone --recursive git@github.com:ARG-NCTU/handover-system.git
+$ cd handover-system
 ```
 
 ### Docker
@@ -41,7 +47,6 @@ docker $ source start_project.sh
 ![Teaser](material/procman.png)
 ### Camera and ViperX300s
 Restart 00_sensor_robot on NUC
-![Teaser](material/procman_00.png)
+
 ### Handover server and client
 Restart 01_handover on workstation
-![Teaser](material/procman_01.png)
