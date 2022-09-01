@@ -33,6 +33,11 @@ $ source Docker/nuc/docker_run.sh
 docker $ source model_download.sh
 ```
 ### Make workspace
+On NUC, set ros master on nuc
+```
+docker $ source environment.sh nuc_IP nuc_IP
+```
+On WS
 ```
 docker $ source environment.sh nuc_IP WS_IP
 ```
