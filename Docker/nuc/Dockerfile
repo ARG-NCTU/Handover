@@ -168,13 +168,13 @@ RUN cd ${HOME} && git clone https://github.com/ARG-NCTU/procman \
 
 #################################### GTSAM ####################################
 
-RUN cd ${HOME}/ \
-    && git clone https://github.com/borglab/gtsam.git \
-    && cd gtsam/ \
-    && mkdir build \
-    && cd build \
-    && cmake .. \
-    && make install
+# RUN cd ${HOME}/ \
+#     && git clone https://github.com/borglab/gtsam.git \
+#     && cd gtsam/ \
+#     && mkdir build \
+#     && cd build \
+#     && cmake .. \
+#     && make install
 
 
 RUN apt-get update && apt-get install -y \
@@ -197,7 +197,8 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # set the version of the realsense library
-ENV LIBREALSENSE_VERSION 2.36.0
+# ENV LIBREALSENSE_VERSION 2.36.0
+ENV LIBREALSENSE_VERSION 2.40.0
 RUN wget https://github.com/IntelRealSense/librealsense/archive/v${LIBREALSENSE_VERSION}.tar.gz && \
     tar -xvzf v${LIBREALSENSE_VERSION}.tar.gz && \
     rm v${LIBREALSENSE_VERSION}.tar.gz && \
