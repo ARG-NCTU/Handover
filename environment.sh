@@ -22,4 +22,4 @@ source ./catkin_ws/devel/setup.bash
 # source ~/.bashrc
 source ~/handover-system/catkin_ws/devel/setup.bash
 
-echo "pick and place environment"
+echo "Handover environment"
