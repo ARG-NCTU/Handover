@@ -23,12 +23,12 @@ def simple_grasp():
         smach.StateMachine.add('Init',
                                 smach_ros.SimpleActionState('handover_action', TestAction,
                                 goal = TestGoal(goal=0)),
-                                {'succeeded':'Multi-view Detect','aborted':'Init'})
+                                {'succeeded':'Single detect','aborted':'Init'})
 
         smach.StateMachine.add('Single detect',
                                 smach_ros.SimpleActionState('handover_action', TestAction,
                                 goal = TestGoal(goal=6)),
-                                {'succeeded':'Go target','aborted':'Single detect'})
+                                {'succeeded':'Go target','aborted':'End'})
         
         smach.StateMachine.add('Go target',
                                 smach_ros.SimpleActionState('handover_action', TestAction,
