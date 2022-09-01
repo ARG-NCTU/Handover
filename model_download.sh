@@ -12,6 +12,6 @@ cd $cwd/model
 
 # HANet pretrained-weight
 echo "Download HANet pretrained weight"
-gdown --id 1uB8HLrW0gnOQVXYd2DevbKjMtPLCUAjv
+gdown --id 17PBimCFf5Au1JBTYcRloMoPmwDERRfUo
 
 cd ..
