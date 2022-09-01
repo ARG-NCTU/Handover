@@ -226,10 +226,17 @@ RUN cd ${HOME}/ \
     && make install
 
 ############################# LoCoBot and PyRobot ############################
-RUN pip3 install --ignore-installed PyYAML
-RUN pip3 install open3d==0.13.0
+RUN pip3 install tensorflow
+
+############################# handover_grasping ############################
+RUN cd ${HOME} && git clone https://github.com/ARG-NCTU/handover_grasping.git \
+    && cd handover_grasping \
+    && python3 setup.py install
 
 ##################################### setting #####################################
+
+RUN pip3 install --ignore-installed PyYAML
+RUN pip3 install open3d==0.13.0
 
 RUN chown -R ${USER}:${USER} ${HOME}/
 RUN echo "dualarm ALL=(ALL)  ALL" > /etc/sudoers
