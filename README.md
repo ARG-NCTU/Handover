@@ -47,7 +47,15 @@ docker $ source catkin_make.sh
 ```
 
 ### Start Procman
+On nuc
 ```
+docker $ source environment.sh nuc_IP nuc_IP
+docker $ source set_remote_procman.sh eno1
+```
+On WS
+```
+docker $ source environment.sh nuc_IP WS_IP
+docker $ source set_remote_procman.sh eno1
 docker $ source start_project.sh
 ```
 ![Teaser](material/procman.png)
