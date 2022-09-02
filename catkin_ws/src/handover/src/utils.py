@@ -44,7 +44,7 @@ zoom_list = [0.69999999999999978, 0.69999999999999987, 0.69999999999999987, 0.69
 def processing(color, depth):
     color = cv2.resize(color, (224, 224))
     depth = cv2.resize(depth, (224, 224))
-    depth[depth > 1000] = 0.0
+    # depth[depth > 1000] = 0.0
 
     color= color[:,:,[2,1,0]]
     color = (color/255.).astype(float)
