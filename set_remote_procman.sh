@@ -10,6 +10,6 @@ echo "Multicast Interface: $1"
 
 MULTICAST_INTERFACE=$1
 
-sudo ifconfig $MULTICAST_INTERFACE multicast
-sudo route add -net 224.0.0.0 netmask 240.0.0.0 dev $MULTICAST_INTERFACE
+ifconfig $MULTICAST_INTERFACE multicast
+route add -net 224.0.0.0 netmask 240.0.0.0 dev $MULTICAST_INTERFACE
 export LCM_DEFAULT_URL=udpm://238.255.76.67:7667?ttl=1
