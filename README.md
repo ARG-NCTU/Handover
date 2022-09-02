@@ -41,6 +41,7 @@ On WS
 ```
 docker $ source environment.sh nuc_IP WS_IP
 ```
+Make workspace (both on nuc and ws)
 ```
 docker $ source catkin_make.sh
 ```
