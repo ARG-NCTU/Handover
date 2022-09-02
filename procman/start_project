@@ -18,6 +18,10 @@ group "01_handover" {
         exec = "roslaunch handover handover_server.launch";
         host = "localhost";
     }
+    cmd "01_handover_action_server" {
+        exec = "roslaunch handover handover_action_server.launch";
+        host = "localhost";
+    }
     cmd "02_handover_client" {
         exec = "roslaunch handover handover_client.launch";
         host = "localhost";
