@@ -39,7 +39,7 @@ docker $ source catkin_make.sh
 ```
 
 ### Start Procman
-On nuc
+On nuc, set procman deputy
 ```
 docker $ source environment.sh
 docker $ source set_remote_procman.sh eno1
