@@ -19,11 +19,11 @@ $ cd handover-system
 ### Docker
 On GPU workstation, run HANet prediction
 ```
-$ source Docker/gpu/docker_run.sh gpu
+$ source gpu_run.sh
 ```
 On NUC
 ```
-$ source Docker/nuc/docker_run.sh
+$ source nuc_run.sh
 ```
 
 ## How to Start
