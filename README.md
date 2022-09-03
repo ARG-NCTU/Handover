@@ -5,8 +5,8 @@
 This system include two computing units, "nuc" for robot arm controlling and sensors, "WS" for HANet inference and handover server and client which has gpu device. 
 |Device   | Usage  | GPU  | IP                                                                                                         |
 |:---------:|:------------------:|:---------------:|:--------------------------------------------------------------------------------------------------------------------:|
-|NUC  | Robot and sensor contorl              | No           | 192.168.50.185  |
-|WS  | HANet Inference and Handover state machine              | Yes           | 192.168.50.161  |
+|NUC  | Robot and sensor contorl              | No           | 192.168.0.185  |
+|WS  | HANet Inference and Handover state machine              | Yes           | 192.168.0.161  |
 
 ![Teaser](material/system-diagram.png)
 
@@ -33,28 +33,21 @@ $ source Docker/nuc/docker_run.sh
 docker $ source model_download.sh
 ```
 ### Make workspace
-On NUC, set ros master on nuc
 ```
-docker $ source environment.sh nuc_IP nuc_IP
-```
-On WS
-```
-docker $ source environment.sh nuc_IP WS_IP
-```
-Make workspace (both on nuc and ws)
-```
+docker $ source environment.sh
 docker $ source catkin_make.sh
 ```
 
 ### Start Procman
 On nuc
 ```
-docker $ source environment.sh nuc_IP nuc_IP
+docker $ source environment.sh
 docker $ source set_remote_procman.sh eno1
+docker $ bot-procman-deputy
 ```
 On WS
 ```
-docker $ source environment.sh nuc_IP WS_IP
+docker $ source environment.sh
 docker $ source set_remote_procman.sh eno1
 docker $ source start_project.sh
 ```
