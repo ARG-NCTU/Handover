@@ -17,7 +17,7 @@ $ cd handover-system
 ```
 
 ### Docker
-On GPU workstation, run HANet prediction
+On GPU workstation
 ```
 $ source gpu_run.sh
 ```
