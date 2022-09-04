@@ -8,7 +8,7 @@ This system include two computing units, "nuc" for robot arm controlling and sen
 |NUC  | Robot and sensor contorl              | No           | 192.168.0.185  |
 |WS  | HANet Inference and Handover state machine              | Yes           | 192.168.0.161  |
 
-![Teaser](material/system-diagram.png)
+![Teaser](figures/system-diagram.png)
 
 ### Clone repo
 ```
@@ -51,7 +51,7 @@ docker $ source environment.sh
 docker $ source set_remote_procman.sh eno1
 docker $ source start_project.sh
 ```
-![Teaser](material/procman.png)
+![Teaser](figures/procman.png)
 ### Camera and ViperX300s
 Restart 00_sensor_robot on NUC
 
