@@ -17,13 +17,13 @@ $ cd handover-system
 ```
 
 ### Docker
-On GPU workstation, run HANet prediction
+On GPU workstation
 ```
-$ source Docker/gpu/docker_run.sh gpu
+$ source gpu_run.sh
 ```
 On NUC
 ```
-$ source Docker/nuc/docker_run.sh
+$ source nuc_run.sh
 ```
 
 ## How to Start
@@ -39,7 +39,7 @@ docker $ source catkin_make.sh
 ```
 
 ### Start Procman
-On nuc
+On nuc, set procman deputy
 ```
 docker $ source environment.sh
 docker $ source set_remote_procman.sh eno1
