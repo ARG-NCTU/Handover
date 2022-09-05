@@ -1,6 +1,6 @@
 # Handover system
 
-### Hardware setup
+## Hardware setup
 This system include two computing units, "nuc" for robot arm controlling and sensors, "WS" for HANet inference and handover server and client which has gpu device. 
 |Device   | Usage  | GPU  | IP                                                                                                         |
 |:---------:|:------------------:|:---------------:|:--------------------------------------------------------------------------------------------------------------------:|
@@ -9,13 +9,13 @@ This system include two computing units, "nuc" for robot arm controlling and sen
 
 ![Teaser](figures/system-diagram.png)
 
-### Clone repo
+## Clone repo
 ```
 $ git clone --recursive git@github.com:ARG-NCTU/handover-system.git
 $ cd handover-system
 ```
 
-### Docker
+## Docker
 On GPU workstation
 ```
 $ source gpu_run.sh
