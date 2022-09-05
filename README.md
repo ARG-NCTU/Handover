@@ -33,15 +33,6 @@ $ source nuc_run.sh
 docker $ source model_download.sh
 ```
 ### Make workspace
-On nuc
-```
-docker $ source environment.sh nuc
-```
-On ws
-```
-docker $ source environment.sh
-```
-Make
 ```
 docker $ source catkin_make.sh
 ```
@@ -49,7 +40,7 @@ docker $ source catkin_make.sh
 ### Start Procman
 On nuc, set procman deputy
 ```
-docker $ source environment.sh
+docker $ source environment.sh nuc
 docker $ source set_remote_procman.sh eno1
 docker $ bot-procman-deputy
 ```
