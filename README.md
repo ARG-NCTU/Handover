@@ -27,11 +27,6 @@ $ source nuc_run.sh
 ```
 
 ## How to Start
-
-### Download HANet pretrianed-weight
-```
-docker $ source model_download.sh
-```
 ### Make workspace
 ```
 docker $ source catkin_make.sh
