@@ -4,7 +4,7 @@ from re import sub
 import rospy
 import time
 from handover_grasping.utils import get_pcd_left, get_pcd_right, get_view, width_detect
-from .utils import Affordance_predict
+from utils import Affordance_predict
 import message_filters
 from cv_bridge import CvBridge, CvBridgeError
 from sensor_msgs.msg import CameraInfo, CompressedImage, Image
@@ -29,7 +29,7 @@ class HandoverServer:
         self._sas.start()
         self.r = TriggerRequest()
         info = rospy.wait_for_message('camera_right/color/camera_info', CameraInfo)
-        with open('./config/multi_view.yaml') as f:
+        with open('/home/dualarm/handover-system/catkin_ws/src/handover/src/config/multi_view.yaml') as f:
             self.config = yaml.load(f, Loader=yaml.FullLoader)
         self.bridge = CvBridge()
         self.mode = mode
@@ -328,34 +328,7 @@ class HandoverServer:
             start = self.get_pose()
             rospy.loginfo('Go Target...')
 
-            # ---------------- Waypoint ---------------- 
-            listener = TransformListener()
-            transformer = TransformerROS()
-            listener.waitForTransform('right_arm/base_link', 'right_arm/ee_arm_link', rospy.Time(0), rospy.Duration(1.0))
-            (trans, rot) = listener.lookupTransform('right_arm/base_link', 'right_arm/ee_arm_link', rospy.Time(0))
-            c_pose = ee_poseRequest()
-            c_pose.target_pose.position.x = trans[0]
-            c_pose.target_pose.position.y = trans[1]
-            c_pose.target_pose.position.z = trans[2]
-
-            c_pose_list = [trans[0], trans[1], trans[2], rot[0], rot[1], rot[2], rot[3]]
-            targetpose_list = [self.target.target_pose.position.x, self.target.target_pose.position.y, self.target.target_pose.position.z, self.target.target_pose.orientation.x, self.target.target_pose.orientation.y, self.target.target_pose.orientation.z, self.target.target_pose.orientation.w]
-            waypoint_list = waypoint(c_pose_list, targetpose_list)
-
-            for sub_pose in waypoint_list:
-                goal_pose = ee_poseRequest()
-                goal_pose.target_pose.position.x = sub_pose[0]
-                goal_pose.target_pose.position.y = sub_pose[1]
-                goal_pose.target_pose.position.z = sub_pose[2]
-                goal_pose.target_pose.orientation.x = sub_pose[3]
-                goal_pose.target_pose.orientation.y = sub_pose[4]
-                goal_pose.target_pose.orientation.z = sub_pose[5]
-                goal_pose.target_pose.orientation.w = sub_pose[6]
-
-                self.target = go_pose
-
-                action = self.go_target()
-            # ---------------- Waypoint ----------------
+            action = self.go_target()
 
             # ---------------- Waypoint ---------------- 
             # listener = TransformListener()
