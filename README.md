@@ -50,7 +50,7 @@ docker $ source start_project.sh
 Restart 00_sensor_robot on NUC
 
 ### Handover server and client
-Restart 01_handover on workstation
+Restart 01_handover on workstation. First restart "handover_action_server" to initial server of FSM (Finie State Machine), and restart the "handover_xxx_client" according to different tasks, we define three tasks showed below.
 <p float="left">
   <img src="figures/multi-view-smach.png" width="300" title="multi-view grasping" />
   <img src="figures/cl-smach.png" width="303" title="close-loop grasping"/> 
