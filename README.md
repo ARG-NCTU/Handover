@@ -36,6 +36,7 @@ docker $ source model_download.sh
 On nuc
 ```
 docker $ source environment.sh nuc
+```
 On ws
 ```
 docker $ source environment.sh
