@@ -54,5 +54,5 @@ Restart 01_handover on workstation
 <p float="left">
   <img src="figures/multi-view-smach.png" width="300" />
   <img src="figures/cl-smach.png" width="303" /> 
-  <img src="figures/simple-samch.png" width="370" />
+  <img src="figures/simple-samch.png" width="365" />
 </p>
