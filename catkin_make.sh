@@ -1,7 +1,6 @@
 #! /bin/bash
 
 source /opt/ros/melodic/setup.bash
-source ./catkin_ws/devel/setup.bash
 
 catkin_make --pkg vision_opencv -C ./catkin_ws \
     -DCMAKE_BUILD_TYPE=Release \
