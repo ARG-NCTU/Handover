@@ -76,7 +76,7 @@ class Affordance_predict():
         r = rospkg.RosPack()
         self.path = r.get_path("handover")
         self.net = HANet(pretrained=True)
-        self.A = [90,45,0,-45]
+        self.A = [90,-45,0,45]
         self.net = self.net.cuda()
         self.bridge = CvBridge()
         self.target_cam_dis = 1000
