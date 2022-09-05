@@ -52,7 +52,7 @@ Restart 00_sensor_robot on NUC
 ### Handover server and client
 Restart 01_handover on workstation
 <p float="left">
-  <img src="figures/multi-view-smach.png" width="200" />
-  <img src="figures/cl-smach.png" width="205" /> 
-  <img src="figures/simple-samch.png" width="250" />
+  <img src="figures/multi-view-smach.png" width="300" />
+  <img src="figures/cl-smach.png" width="304" /> 
+  <img src="figures/simple-samch.png" width="350" />
 </p>
