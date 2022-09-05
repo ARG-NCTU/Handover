@@ -1,6 +1,5 @@
 # Handover system
 
-## Setup
 ### Hardware setup
 This system include two computing units, "nuc" for robot arm controlling and sensors, "WS" for HANet inference and handover server and client which has gpu device. 
 |Device   | Usage  | GPU  | IP                                                                                                         |
