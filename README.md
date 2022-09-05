@@ -40,7 +40,7 @@ docker $ bot-procman-deputy
 ```
 On WS
 ```
-docker $ source environment.sh
+docker $ source environment.sh ws
 docker $ source set_remote_procman.sh eno1
 docker $ source start_project.sh
 ```
