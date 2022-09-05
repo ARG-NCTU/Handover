@@ -52,7 +52,7 @@ def close_loop_grasp():
                                 {'succeeded':'End','aborted':'End'})
 
     
-    sis = smach_ros.IntrospectionServer('my_smach_introspection_server', sm0, '/SM_ROOT')
+    sis = smach_ros.IntrospectionServer('my_smach_introspection_server', sm0, '/Close-Loop')
     sis.start()
 
     outcome = sm0.execute()
