@@ -33,8 +33,15 @@ $ source nuc_run.sh
 docker $ source model_download.sh
 ```
 ### Make workspace
+On nuc
+```
+docker $ source environment.sh nuc
+On ws
 ```
 docker $ source environment.sh
+```
+Make
+```
 docker $ source catkin_make.sh
 ```
 
