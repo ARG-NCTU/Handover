@@ -53,5 +53,5 @@ Restart 01_handover on workstation. We use [Actionlib](http://wiki.ros.org/actio
 <p float="left">
   <img src="figures/multi-view-smach.png" width="300" title="multi-view grasping" />
   <img src="figures/cl-smach.png" width="303" title="close-loop grasping"/> 
-  <img src="figures/simple-samch.png" width="366" title="simple grasping"/>
+  <img src="figures/simple-samch.png" width="365" title="simple grasping"/>
 </p>
