@@ -1,7 +1,6 @@
 # Handover system
 
-## Setup
-### Hardware setup
+## Hardware setup
 This system include two computing units, "nuc" for robot arm controlling and sensors, "WS" for HANet inference and handover server and client which has gpu device. 
 |Device   | Usage  | GPU  | IP                                                                                                         |
 |:---------:|:------------------:|:---------------:|:--------------------------------------------------------------------------------------------------------------------:|
@@ -10,13 +9,13 @@ This system include two computing units, "nuc" for robot arm controlling and sen
 
 ![Teaser](figures/system-diagram.png)
 
-### Clone repo
+## Clone repo
 ```
 $ git clone --recursive git@github.com:ARG-NCTU/handover-system.git
 $ cd handover-system
 ```
 
-### Docker
+## Docker
 On GPU workstation
 ```
 $ source gpu_run.sh
@@ -50,9 +49,9 @@ docker $ source start_project.sh
 Restart 00_sensor_robot on NUC
 
 ### Handover server and client
-Restart 01_handover on workstation
+Restart 01_handover on workstation. We use [Actionlib](http://wiki.ros.org/actionlib) and [Smach](http://wiki.ros.org/smach) with ROS to control our system. First restart "handover_action_server" to initial server of FSM (Finie State Machine), and restart the "handover_xxx_client" according to different tasks, we define three tasks showed below.
 <p float="left">
-  <img src="figures/multi-view-smach.png" width="200" />
-  <img src="figures/cl-smach.png" width="200" /> 
-  <img src="figures/simple-samch.png" width="200" />
+  <img src="figures/multi-view-smach.png" width="250" title="multi-view grasping" />
+  <img src="figures/cl-smach.png" width="252" title="close-loop grasping"/> 
+  <img src="figures/simple-samch.png" width="305" title="simple grasping"/>
 </p>
