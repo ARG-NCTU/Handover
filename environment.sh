@@ -1,19 +1,20 @@
 #! /bin/bash
 
-if [ "$1" ]; then
-    echo "ROS MASRER $1"
-    export ROS_MASTER_URI=http://$1:11311
-else
-    echo "ROS MASRER 127.0.0.1"
-    export ROS_MASTER_URI=http://127.0.0.1:11311
-fi
+cwd=$PWD
 
-if [ "$2" ]; then
-    echo "ROS IP $2"
-    export ROS_IP=$2
+{ read -r var1;} < <(yq -r .handover.nuc.ip_in $PWD/config/system-device.yaml)
+{ read -r var2;} < <(yq -r .handover.workstation.ip_in $PWD/config/system-device.yaml)
+
+
+echo "ROS MASRER" $var1
+export ROS_MASTER_URI=http://$var1:11311
+
+if [ "$1" == 'nuc' ]; then
+    echo "ROS IP $var1"
+    export ROS_IP=$var1
 else
-    echo "ROS IP 127.0.0.1"
-    export ROS_IP=127.0.0.1
+    echo "ROS IP $var2"
+    export ROS_IP=$var2
 fi
 
 source /opt/ros/melodic/setup.bash
