@@ -14,7 +14,7 @@ if [ "$1" == 'nuc' ]; then
 
     echo "ROS IP $var1"
     export ROS_IP=$var1
-elif [ "$1" == 'ws' ]
+elif [ "$1" == 'ws' ]; then
     echo "ROS MASRER" $var1
     export ROS_MASTER_URI=http://$var1:11311
 
