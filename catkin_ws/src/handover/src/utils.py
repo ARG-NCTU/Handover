@@ -111,8 +111,10 @@ class Affordance_predict():
         depth_in = depth_in.cuda()
 
         # Get gripping point base on camera link
-        x, y, aff_pub, angle = self.net.get_affordanceMap(color_in, depth_in, cv_depth_grasp)
-
+        aff_pub, x, y, angle = self.net.get_affordanceMap(color_in, depth_in, cv_depth_grasp)
+        print(x, y, angle)
+        aff_pub = cv2.addWeighted(cv_image,0.7,aff_pub, 0.3,0,dtype=cv2.CV_8UC3)
+        # aff_pub = np.array(aff_pub, dtype=np.uint8)
         if single:
             aff_pub = cv2.circle(aff_pub, (int(x), int(y)), 10, (0,255,0), -1)
             p = self.bridge.cv2_to_imgmsg(aff_pub, "bgr8")
@@ -130,22 +132,22 @@ class Affordance_predict():
                 # Add to pose msgs
                 Target_pose = ee_poseRequest()
 
-                if self.Mode == 'handover':
-                    rot = Rotation.from_euler('xyz', [angle, -15, 0], degrees=True)
-                    # else:
-                    Target_pose.target_pose.position.x = camera_x - 0.02
-                    Target_pose.target_pose.position.y = camera_y
-                    Target_pose.target_pose.position.z = camera_z + 0.05
-                else:
-                    rot = Rotation.from_euler('xyz', [0, 80, 0], degrees=True)
-                    if Arm == 'right_arm':
-                        Target_pose.target_pose.position.x = camera_x
-                        Target_pose.target_pose.position.y = camera_y + 0.027
-                        Target_pose.target_pose.position.z = camera_z - 0.01
-                    else:
-                        Target_pose.target_pose.position.x = camera_x
-                        Target_pose.target_pose.position.y = camera_y - 0.04
-                        Target_pose.target_pose.position.z = camera_z + 0.05
+                # if self.Mode == 'handover':
+                rot = Rotation.from_euler('xyz', [angle, -15, 0], degrees=True)
+                # else:
+                Target_pose.target_pose.position.x = camera_x - 0.02
+                Target_pose.target_pose.position.y = camera_y
+                Target_pose.target_pose.position.z = camera_z + 0.05
+                # else:
+                #     rot = Rotation.from_euler('xyz', [0, 80, 0], degrees=True)
+                #     if Arm == 'right_arm':
+                #         Target_pose.target_pose.position.x = camera_x
+                #         Target_pose.target_pose.position.y = camera_y + 0.027
+                #         Target_pose.target_pose.position.z = camera_z - 0.01
+                #     else:
+                #         Target_pose.target_pose.position.x = camera_x
+                #         Target_pose.target_pose.position.y = camera_y - 0.04
+                #         Target_pose.target_pose.position.z = camera_z + 0.05
 
                 rot_quat = rot.as_quat()
 
