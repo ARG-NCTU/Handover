@@ -177,13 +177,16 @@ RUN pip3 install \
     easydict \
     lmdb \  
     shapely 
+
+RUN pip3 install --ignore-installed PyYAML
+RUN pip3 install open3d==0.13.0
     
 ##################################### Pytorch ######################################
 
 RUN python3 -m pip install -U pip 
 
 RUN python3 -m pip install \
-    torch==1.7.0 torchvision==0.8.1 torchaudio==0.7.0 -f https://download.pytorch.org/whl/torch_stable.html
+    torch==1.5.0 torchvision==0.6.0 -f https://download.pytorch.org/whl/torch_stable.html
 
 ##################################### PIP2 ######################################
 
@@ -213,30 +216,17 @@ RUN cd ${HOME} && git clone https://github.com/ARG-NCTU/procman \
     && cmake .. \
     && make install
 
-#################################### GTSAM ####################################
-
-RUN apt-get update 
-
-RUN cd ${HOME}/ \
-    && git clone https://github.com/borglab/gtsam.git \
-    && cd gtsam/ \
-    && mkdir build \
-    && cd build \
-    && cmake .. \
-    && make install
-
-############################# LoCoBot and PyRobot ############################
-RUN pip3 install tensorflow
-
 ############################# handover_grasping ############################
+
+# RUN pip2 install torch==1.3.0 torchvision==0.5.0
 RUN cd ${HOME} && git clone https://github.com/ARG-NCTU/handover_grasping.git \
     && cd handover_grasping \
     && python3 setup.py install
 
+
 ##################################### setting #####################################
 
-RUN pip3 install --ignore-installed PyYAML
-RUN pip3 install open3d==0.13.0
+
 
 RUN chown -R ${USER}:${USER} ${HOME}/
 RUN echo "dualarm ALL=(ALL)  ALL" > /etc/sudoers
