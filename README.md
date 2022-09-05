@@ -52,6 +52,6 @@ Restart 00_sensor_robot on NUC
 Restart 01_handover on workstation. We use [Actionlib](http://wiki.ros.org/actionlib) and [Smach](http://wiki.ros.org/smach) with ROS to control our system. First restart "handover_action_server" to initial server of FSM (Finie State Machine), and restart the "handover_xxx_client" according to different tasks, we define three tasks showed below.
 <p float="left">
   <img src="figures/multi-view-smach.png" width="250" title="multi-view grasping" />
-  <img src="figures/cl-smach.png" width="253" title="close-loop grasping"/> 
-  <img src="figures/simple-samch.png" width="315" title="simple grasping"/>
+  <img src="figures/cl-smach.png" width="252" title="close-loop grasping"/> 
+  <img src="figures/simple-samch.png" width="305" title="simple grasping"/>
 </p>
