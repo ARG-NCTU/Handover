@@ -52,7 +52,7 @@ Restart 00_sensor_robot on NUC
 ### Handover server and client
 Restart 01_handover on workstation
 <p float="left">
-  <img src="figures/multi-view-smach.png" width="300" />
-  <img src="figures/cl-smach.png" width="303" /> 
-  <img src="figures/simple-samch.png" width="365" />
+  <img src="figures/multi-view-smach.png" width="300" title="multi-view grasping" />
+  <img src="figures/cl-smach.png" width="303" title="close-loop grasping"/> 
+  <img src="figures/simple-samch.png" width="365" title="simple grasping"/>
 </p>
