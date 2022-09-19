@@ -2,7 +2,7 @@
 
 BASH_OPTION=bash
 
-IMG=argnctu/dualarm:gpu
+IMG=argnctu/handover_system:gpu
 
 xhost +
 containerid=$(docker ps -aqf "ancestor=${IMG}") && echo $containerid

@@ -2,7 +2,7 @@
 
 BASH_OPTION=bash
 
-IMG=argnctu/dualarm:nuc
+IMG=argnctu/handover_system:nuc
 
 xhost +
 containerid=$(docker ps -aqf "ancestor=${IMG}") && echo $containerid

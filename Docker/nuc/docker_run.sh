@@ -56,10 +56,11 @@ docker run \
     -v "/dev:/dev" \
     -v "/var/run/docker.sock:/var/run/docker.sock" \
     -w "/home/dualarm/handover-system" \
+    --user "root:root" \
     --name mmdualarm \
     --network host \
     --privileged \
     --security-opt seccomp=unconfined \
     $DOCKER_OPTS \
-    argnctu/dualarm:nuc \
+    argnctu/handover_system:nuc \
     $BASH_OPTION

@@ -1,2 +1,2 @@
 #!/bin/sh
-docker build --rm -t argnctu/dualarm:gpu .
+docker build --rm -t argnctu/handover_system:gpu .
