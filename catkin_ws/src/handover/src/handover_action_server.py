@@ -19,6 +19,8 @@ from actionlib import *
 from actionlib_msgs.msg import *
 from vx300s_bringup.srv import *
 from handover.srv import *
+from random import randrange
+
 import yaml
 warnings.filterwarnings("ignore")
 
@@ -64,7 +66,7 @@ class HandoverServer:
         self.color_sub_m = message_filters.Subscriber('/camera_mid/color/image_raw/compressed', CompressedImage)
         self.depth_sub_m = message_filters.Subscriber('/camera_mid/aligned_depth_to_color/image_raw', Image)
 
-        ts = message_filters.ApproximateTimeSynchronizer([self.color_sub_r, self.depth_sub_r, self.color_sub_l, self.depth_sub_l, self.color_sub_m, self.depth_sub_m], 5, 5)
+        ts = message_filters.ApproximateTimeSynchronizer([self.color_sub_r, self.depth_sub_r, self.color_sub_l, self.depth_sub_l, self.color_sub_m, self.depth_sub_m], 10, 0.5)
         ts.registerCallback(self.callback_img_msgs)
 
         # Publisher prediction image
@@ -221,9 +223,20 @@ class HandoverServer:
         dif0 = width_detect(d0, center0, a0)
 
         # 0, 1, 2, 3, 4
-        DIF = [dif90, dif67, dif45, dif22, dif0]
+        DIF = [dif90, 99999999, dif45, 99999999, dif0]
         print(DIF)
+        min_width = min(DIF)
         view_id = DIF.index(min(DIF))
+        if abs(min_width) < 60.0:
+            if view_id == 0:
+                view_id = 1
+            elif view_id == 4:
+                view_id = 3
+            elif view_id == 2:
+                if abs(abs(DIF[0]) - abs(min_width)) < abs(abs(DIF[2]) - abs(min_width)):
+                    view_id = 1
+                else:
+                    view_id = 3
 
         return view_id
 
@@ -310,7 +323,7 @@ class HandoverServer:
                 # 0
                 action = self.go_0()
 
-            time.sleep(0.5)
+            time.sleep(1)
 
             c, d = self.msg2cv(self.color_r, self.depth_r)
             self.target, aff_map, self.dis, self.angle = self.single_pred(c, d,'right_arm')
@@ -456,6 +469,7 @@ class HandoverServer:
                     print("service did not process request: " + str(exc))
 
             if self.VIEW != 0 and self.VIEW != 4:
+                self.angle = 0
                 if self.angle == 90:
                     try:
                         go_pose = rospy.ServiceProxy("/{0}/turnto90".format('right_arm'), Trigger)
@@ -476,6 +490,7 @@ class HandoverServer:
                         print("service did not process request: " + str(exc))
 
             elif self.VIEW == 0:
+                self.angle = 0
                 f = float_commandRequest()
                 if self.angle == 90:
                     f.view.data = -2.4
@@ -499,6 +514,7 @@ class HandoverServer:
                     except rospy.ServiceException as exc:
                         print("service did not process request: " + str(exc))
             elif self.VIEW == 4:
+                self.angle = 0
                 f = float_commandRequest()
                 if self.angle == 90:
                     f.view.data = 2.7
@@ -524,6 +540,61 @@ class HandoverServer:
 
             rospy.sleep(1.5)
             self._sas.set_succeeded()
+
+        elif msg.goal == 9:
+            rospy.loginfo('Single Multi-view detecting......')
+            self.arm = 'right_arm'
+            action = True
+
+            action = self.go_90()
+            time.sleep(0.7)
+            action = self.go_45()
+            time.sleep(0.7)
+            action = self.go_67()
+            time.sleep(0.7)
+            action = self.go_45()
+            time.sleep(0.7)
+            action = self.go_22()
+            time.sleep(0.5)
+            action = self.go_45()
+            time.sleep(0.7)
+            action = self.go_0()
+            time.sleep(0.7)
+            action = self.go_45()
+
+
+            self.VIEW = randrange(5)
+
+            time.sleep(0.7)
+
+            if self.VIEW == 0:
+                # 90
+                action = self.go_90()
+            elif self.VIEW == 1:
+                # 67
+                action = self.go_67()
+            elif self.VIEW == 2:
+                # 45
+                action = self.go_45()
+            elif self.VIEW == 3:
+                # 22
+                action = self.go_22()
+            elif self.VIEW == 4:
+                # 0
+                action = self.go_0()
+
+            time.sleep(0.7)
+
+            c, d = self.msg2cv(self.color_r, self.depth_r)
+            self.target, aff_map, self.dis, self.angle = self.single_pred(c, d,'right_arm')
+
+            self.aff_pub_center_pcl.publish(aff_map)
+
+            if self.target != None and action == True:
+                self._sas.set_succeeded()
+            else:
+                _ = self.go_45()
+                self._sas.set_aborted()
 
 
 
