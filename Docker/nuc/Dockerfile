@@ -116,6 +116,7 @@ RUN apt-get -o Acquire::ForceIPv4=true update && apt-get -yq dist-upgrade \
     python3-empy  \
     python3-lxml \
     python3-pymodbus \
+    jq \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -139,6 +140,7 @@ RUN pip3 install \
     easydict \
     lmdb \  
     modern-robotics \
+    yq \
     shapely
 
 ##################################### PIP2 ######################################
