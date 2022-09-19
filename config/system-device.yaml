@@ -4,4 +4,4 @@ handover:
     hostname: arg-vx300s
   workstation:
     ip_in: 192.168.0.161
-    SSID: argnctu
+    hostname: argnctu

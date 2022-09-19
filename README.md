@@ -14,8 +14,17 @@ This system include two computing units, "nuc" for robot arm controlling and sen
 $ git clone --recursive git@github.com:ARG-NCTU/handover-system.git
 $ cd handover-system
 ```
+For first time use, please pull the docker  
+On workstation
+```
+$ docker pull argnctu/handover_system:gpu
+```
+On NUC
+```
+$ docker pull argnctu/handover_system
+```
 
-## Docker
+## Start Docker
 On GPU workstation
 ```
 $ source gpu_run.sh

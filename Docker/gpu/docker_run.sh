@@ -60,5 +60,5 @@ docker run \
     --privileged \
     --security-opt seccomp=unconfined \
     $DOCKER_OPTS \
-    argnctu/dualarm:gpu \
+    argnctu/handover_system:gpu \
     $BASH_OPTION
