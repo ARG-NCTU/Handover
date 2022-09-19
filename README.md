@@ -17,11 +17,11 @@ $ cd handover-system
 For first time use, please pull the docker  
 On workstation
 ```
-$ docker pull argnctu/dualarm:gpu
+$ docker pull argnctu/handover_system:gpu
 ```
 On NUC
 ```
-$ docker pull argnctu/dualarm
+$ docker pull argnctu/handover_system
 ```
 
 ## Start Docker
