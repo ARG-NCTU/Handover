@@ -76,7 +76,7 @@ class Affordance_predict():
         r = rospkg.RosPack()
         self.path = r.get_path("handover")
         self.net = HANet(pretrained=True)
-        self.A = [90,-45,0,45]
+        self.A = [90,45,0,-45]
         self.net = self.net.cuda()
         self.bridge = CvBridge()
         self.target_cam_dis = 1000
@@ -112,6 +112,10 @@ class Affordance_predict():
 
         # Get gripping point base on camera link
         aff_pub, x, y, angle = self.net.get_affordanceMap(color_in, depth_in, cv_depth_grasp)
+        if angle == 45:
+            angle = -45
+        elif angle == -45:
+            angle = 45
         print(x, y, angle)
         aff_pub = cv2.addWeighted(cv_image,0.7,aff_pub, 0.3,0,dtype=cv2.CV_8UC3)
         # aff_pub = np.array(aff_pub, dtype=np.uint8)
