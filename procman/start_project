@@ -30,6 +30,10 @@ group "01_handover" {
         exec = "roslaunch handover handover_simple_client.launch";
         host = "localhost";
     }
+    cmd "05_handover_single_camera_multi_view_client" {
+        exec = "roslaunch handover handover_single_camera_multi_view_client.launch";
+        host = "localhost";
+    }
     
 }
 
