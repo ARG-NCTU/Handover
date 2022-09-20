@@ -473,8 +473,6 @@ class HandoverServer:
                 cv_r, d_r = self.msg2cv(self.color_r, self.depth_r)
                 _, _, _, center = self.pred.predict(cv_r, d_r, 'right_arm', True)
                 DIF.append(width_detect(d_r, center, 0))
-                # if i != 2:
-                #     self.go_view(45)
 
             self.go_view(45)
 
