@@ -100,6 +100,7 @@ class HandoverServer:
              = 5 : Wait_object
              = 6 : Single detect
              = 7 : User actively give
+             = 7 : Single camera multi-view detect
         """
 
     def get_pose(self):
@@ -543,62 +544,7 @@ class HandoverServer:
             rospy.sleep(1.5)
             self._sas.set_succeeded()
 
-        elif msg.goal == 9:
-            rospy.loginfo('Single Multi-view detecting......')
-            self.arm = 'right_arm'
-            action = True
-
-            action = self.go_90()
-            time.sleep(0.7)
-            action = self.go_45()
-            time.sleep(0.7)
-            action = self.go_67()
-            time.sleep(0.7)
-            action = self.go_45()
-            time.sleep(0.7)
-            action = self.go_22()
-            time.sleep(0.5)
-            action = self.go_45()
-            time.sleep(0.7)
-            action = self.go_0()
-            time.sleep(0.7)
-            action = self.go_45()
-
-
-            self.VIEW = randrange(5)
-
-            time.sleep(0.7)
-
-            if self.VIEW == 0:
-                # 90
-                action = self.go_90()
-            elif self.VIEW == 1:
-                # 67
-                action = self.go_67()
-            elif self.VIEW == 2:
-                # 45
-                action = self.go_45()
-            elif self.VIEW == 3:
-                # 22
-                action = self.go_22()
-            elif self.VIEW == 4:
-                # 0
-                action = self.go_0()
-
-            time.sleep(0.7)
-
-            c, d = self.msg2cv(self.color_r, self.depth_r)
-            self.target, aff_map, self.dis, self.angle = self.single_pred(c, d,'right_arm')
-
-            self.aff_pub_center_pcl.publish(aff_map)
-
-            if self.target != None and action == True:
-                self._sas.set_succeeded()
-            else:
-                _ = self.go_45()
-                self._sas.set_aborted()
-
-        elif msg.goal == 10:
+        elif msg.goal == 8:
             # 90
             self.go_90()
             rospy.sleep(0.5)
