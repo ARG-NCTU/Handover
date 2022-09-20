@@ -1,7 +1,7 @@
 # Handover system
 
 ## Hardware setup
-This system include two computing units for handover task, "nuc" for robot arm controlling and sensors, "WS" for HANet inference and handover server and client which has gpu device. Another device "VR_WS" is for VR task.
+This system include two computing units for HANet handover grasping task, "nuc" for robot arm controlling and sensors, "WS" for HANet inference and handover server and client which has gpu device. Another device "VR_WS" is for VR task.
 |Device   | Usage  | GPU  | IP                                                                                                         |
 |:---------:|:------------------:|:---------------:|:--------------------------------------------------------------------------------------------------------------------:|
 |NUC  | Robot and sensor contorl              | No           | 192.168.0.185  |
