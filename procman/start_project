@@ -1,14 +1,15 @@
 group "00_sensor_robot" {   
-    cmd "01_camera" {
+    cmd "01_force_sensor" {
+        exec = "roslaunch robotiq_ft_sensor ft_sensor.launch";
+        host = "arg-vx300s";
+    }
+    
+    cmd "02_camera" {
         exec = "roslaunch multi_view_camera triple_camera.launch";
         host = "arg-vx300s";
     }
-    cmd "02_vx300s_setup" {
+    cmd "03_vx300s_setup" {
         exec = "roslaunch arm_control arm_control.launch";
-        host = "arg-vx300s";
-    }
-    cmd "03_force_sensor" {
-        exec = "roslaunch robotiq_ft_sensor ft_sensor.launch";
         host = "arg-vx300s";
     }
     
