@@ -44,6 +44,7 @@ class HandoverServer:
         self.depth_m = None
         self.target = None
         self.model_on = False
+        self.view_list = [90,67,45,22,0]
         self.f_x = 0
         self.f_y = 0
         self.f_z = 0
@@ -86,7 +87,7 @@ class HandoverServer:
         # Service
         rospy.Service('~switch_loop', Trigger, self.switch_loop)
 
-        self.go_45()
+        self.go_view(45)
 
         rospy.loginfo("Server Initial Complete")
 
@@ -100,7 +101,7 @@ class HandoverServer:
              = 5 : Wait_object
              = 6 : Single detect
              = 7 : User actively give
-             = 7 : Single camera multi-view detect
+             = 8 : Single camera multi-view detect
         """
 
     def get_pose(self):
@@ -119,50 +120,59 @@ class HandoverServer:
 
         return c_pose
 
-    def go_90(self):
+    def go_view(self, angle):
         try:
-            go_pose = rospy.ServiceProxy("/{0}/multi_view_90".format('right_arm'), Trigger)
+            go_pose = rospy.ServiceProxy("/{0}/multi_view_{0}".format('right_arm',str(angle)), Trigger)
             resp = go_pose(self.r)
             return True
         except rospy.ServiceException as exc:
             print("service did not process request: " + str(exc))
             return True
 
-    def go_67(self):
-        try:
-            go_pose = rospy.ServiceProxy("/{0}/multi_view_67".format('right_arm'), Trigger)
-            resp = go_pose(self.r)
-            return True
-        except rospy.ServiceException as exc:
-            print("service did not process request: " + str(exc))
-            return False
+    # def go_90(self):
+    #     try:
+    #         go_pose = rospy.ServiceProxy("/{0}/multi_view_90".format('right_arm'), Trigger)
+    #         resp = go_pose(self.r)
+    #         return True
+    #     except rospy.ServiceException as exc:
+    #         print("service did not process request: " + str(exc))
+    #         return True
 
-    def go_45(self):
-        try:
-            go_pose = rospy.ServiceProxy("/{0}/go_handover".format('right_arm'), Trigger)
-            resp = go_pose(self.r)
-            return True
-        except rospy.ServiceException as exc:
-            print("service did not process request: " + str(exc))
-            return False
+    # def go_67(self):
+    #     try:
+    #         go_pose = rospy.ServiceProxy("/{0}/multi_view_67".format('right_arm'), Trigger)
+    #         resp = go_pose(self.r)
+    #         return True
+    #     except rospy.ServiceException as exc:
+    #         print("service did not process request: " + str(exc))
+    #         return False
 
-    def go_22(self):
-        try:
-            go_pose = rospy.ServiceProxy("/{0}/multi_view_22".format('right_arm'), Trigger)
-            resp = go_pose(self.r)
-            return True
-        except rospy.ServiceException as exc:
-            print("service did not process request: " + str(exc))
-            return False
+    # def go_45(self):
+    #     try:
+    #         go_pose = rospy.ServiceProxy("/{0}/go_handover".format('right_arm'), Trigger)
+    #         resp = go_pose(self.r)
+    #         return True
+    #     except rospy.ServiceException as exc:
+    #         print("service did not process request: " + str(exc))
+    #         return False
 
-    def go_0(self):
-        try:
-            go_pose = rospy.ServiceProxy("/{0}/multi_view_0".format('right_arm'), Trigger)
-            resp = go_pose(self.r)
-            return True
-        except rospy.ServiceException as exc:
-            print("service did not process request: " + str(exc))
-            return False
+    # def go_22(self):
+    #     try:
+    #         go_pose = rospy.ServiceProxy("/{0}/multi_view_22".format('right_arm'), Trigger)
+    #         resp = go_pose(self.r)
+    #         return True
+    #     except rospy.ServiceException as exc:
+    #         print("service did not process request: " + str(exc))
+    #         return False
+
+    # def go_0(self):
+    #     try:
+    #         go_pose = rospy.ServiceProxy("/{0}/multi_view_0".format('right_arm'), Trigger)
+    #         resp = go_pose(self.r)
+    #         return True
+    #     except rospy.ServiceException as exc:
+    #         print("service did not process request: " + str(exc))
+    #         return False
 
     def open_gripper(self):
         try:
@@ -285,7 +295,7 @@ class HandoverServer:
             # Go initial pose
             self.count = 0
             self.cl_count = 0
-            action_1 = self.go_45()
+            action_1 = self.go_view(45)
 
             # open gripper
             action_2 = self.open_gripper()
@@ -310,33 +320,34 @@ class HandoverServer:
 
             self.VIEW = self.multi_pred(cv_90, d_90, cv_67, d_67, cv_45, d_45, cv_22, d_22, cv_0, d_0)
 
-            if self.VIEW == 0:
-                # 90
-                action = self.go_90()
-            elif self.VIEW == 1:
-                # 67
-                action = self.go_67()
-            elif self.VIEW == 2:
-                # 45
-                action = self.go_45()
-            elif self.VIEW == 3:
-                # 22
-                action = self.go_22()
-            elif self.VIEW == 4:
-                # 0
-                action = self.go_0()
+            action = self.go_view(self.view_list[self.VIEW ])
+
+            # if self.VIEW == 0:
+            #     # 90
+            #     action = self.go_view(90)
+            # elif self.VIEW == 1:
+            #     # 67
+            #     action = self.go_view(67)
+            # elif self.VIEW == 2:
+            #     # 45
+            #     action = self.go_view(45)
+            # elif self.VIEW == 3:
+            #     # 22
+            #     action = self.go_view(22)
+            # elif self.VIEW == 4:
+            #     # 0
+            #     action = self.go_view(0)
 
             time.sleep(1)
 
             c, d = self.msg2cv(self.color_r, self.depth_r)
             self.target, aff_map, self.dis, self.angle = self.single_pred(c, d,'right_arm')
 
-            self.aff_pub_center_pcl.publish(aff_map)
-
             if self.target != None and action == True:
+                self.aff_pub_center_pcl.publish(aff_map)
                 self._sas.set_succeeded()
             else:
-                _ = self.go_45()
+                _ = self.go_view(45)
                 self._sas.set_aborted()
 
         # Go target
@@ -399,7 +410,7 @@ class HandoverServer:
             rospy.sleep(0.5)
 
             # Back
-            action_2 = self.go_45()
+            action_2 = self.go_view(45)
             action_3 = self.open_gripper()
             
             if action_1 == True and action_2 == True and action_3 == True:
@@ -544,47 +555,56 @@ class HandoverServer:
             rospy.sleep(1.5)
             self._sas.set_succeeded()
 
+        # Single camera multi-view detect
         elif msg.goal == 8:
-            # 90
-            self.go_90()
-            rospy.sleep(0.5)
-            cv_r, d_r = self.msg2cv(self.color_r, self.depth_r)
-            _, _, angle, center = self.pred.predict(cv_r, d_r, 'right_arm', True)
-            dif90 = width_detect(d_r, center, 0)
-            self.go_45()
-            rospy.sleep(0.5)
-            # 67
-            self.go_67()
-            rospy.sleep(0.5)
-            cv_r, d_r = self.msg2cv(self.color_r, self.depth_r)
-            _, _, angle, center = self.pred.predict(cv_r, d_r, 'right_arm', True)
-            # _, _, _, angle, center = self.single_pred(cv_r, d_r, 'right_arm')
-            dif67 = width_detect(d_r, center, 0)
-            self.go_45()
-            rospy.sleep(0.5)
+            DIF = []
+            for i in range(5):
+                self.go_view(i)
+                rospy.sleep(0.5)
+                cv_r, d_r = self.msg2cv(self.color_r, self.depth_r)
+                _, _, _, center = self.pred.predict(cv_r, d_r, 'right_arm', True)
+                DIF.append(width_detect(d_r, center, 0))
+                if i != 2:
+                    self.go_view(45)
+            # # 90
+            # self.go_view(90)
+            # rospy.sleep(0.5)
+            # cv_r, d_r = self.msg2cv(self.color_r, self.depth_r)
+            # _, _, angle, center = self.pred.predict(cv_r, d_r, 'right_arm', True)
+            # dif90 = width_detect(d_r, center, 0)
+            # self.go_view(45)
+            # rospy.sleep(0.5)
+            # # 67
+            # self.go_view(67)
+            # rospy.sleep(0.5)
+            # cv_r, d_r = self.msg2cv(self.color_r, self.depth_r)
+            # _, _, angle, center = self.pred.predict(cv_r, d_r, 'right_arm', True)
+            # dif67 = width_detect(d_r, center, 0)
+            # self.go_view(45)
+            # rospy.sleep(0.5)
 
-            # 45
-            cv_r, d_r = self.msg2cv(self.color_r, self.depth_r)
-            _, _, angle, center = self.pred.predict(cv_r, d_r, 'right_arm', True)
-            dif45 = width_detect(d_r, center, 0)
-            rospy.sleep(0.5)
-            # 22
-            self.go_22()
-            rospy.sleep(0.5)
-            cv_r, d_r = self.msg2cv(self.color_r, self.depth_r)
-            _, _, angle, center = self.pred.predict(cv_r, d_r, 'right_arm', True)
-            dif22 = width_detect(d_r, center, 0)
-            self.go_45()
-            rospy.sleep(0.5)
-            # 0
-            self.go_0()
-            rospy.sleep(0.5)
-            cv_r, d_r = self.msg2cv(self.color_r, self.depth_r)
-            _, _, angle, center = self.pred.predict(cv_r, d_r, 'right_arm', True)
-            dif0 = width_detect(d_r, center, 0)
-            self.go_45()
+            # # 45
+            # cv_r, d_r = self.msg2cv(self.color_r, self.depth_r)
+            # _, _, angle, center = self.pred.predict(cv_r, d_r, 'right_arm', True)
+            # dif45 = width_detect(d_r, center, 0)
+            # rospy.sleep(0.5)
+            # # 22
+            # self.go_view(22)
+            # rospy.sleep(0.5)
+            # cv_r, d_r = self.msg2cv(self.color_r, self.depth_r)
+            # _, _, angle, center = self.pred.predict(cv_r, d_r, 'right_arm', True)
+            # dif22 = width_detect(d_r, center, 0)
+            # self.go_view(45)
+            # rospy.sleep(0.5)
+            # # 0
+            # self.go_view(0)
+            # rospy.sleep(0.5)
+            # cv_r, d_r = self.msg2cv(self.color_r, self.depth_r)
+            # _, _, angle, center = self.pred.predict(cv_r, d_r, 'right_arm', True)
+            # dif0 = width_detect(d_r, center, 0)
+            # self.go_view(45)
 
-            DIF = [dif90, dif67, dif45, dif22, dif0]
+            # DIF = [dif90, dif67, dif45, dif22, dif0]
             print(DIF)
             self.VIEW = DIF.index(min(DIF))
 
@@ -592,33 +612,36 @@ class HandoverServer:
                 if DIF[2] < -10:
                     self.VIEW = 1
 
-            if self.VIEW == 0:
-                # 90
-                action = self.go_90()
-            elif self.VIEW == 1:
-                # 67
-                action = self.go_67()
-            elif self.VIEW == 2:
-                # 45
-                action = self.go_45()
-            elif self.VIEW == 3:
-                # 22
-                action = self.go_22()
-            elif self.VIEW == 4:
-                # 0
-                action = self.go_0()
+            action = self.go_view(self.view_list[self.VIEW])
+
+            # if self.VIEW == 0:
+            #     # 90
+            #     action = self.go_90()
+            # elif self.VIEW == 1:
+            #     # 67
+            #     action = self.go_67()
+            # elif self.VIEW == 2:
+            #     # 45
+            #     action = self.go_45()
+            # elif self.VIEW == 3:
+            #     # 22
+            #     action = self.go_22()
+            # elif self.VIEW == 4:
+            #     # 0
+            #     action = self.go_0()
 
             time.sleep(1)
 
             c, d = self.msg2cv(self.color_r, self.depth_r)
             self.target, aff_map, self.dis, self.angle = self.single_pred(c, d,'right_arm')
 
-            self.aff_pub_center_pcl.publish(aff_map)
+            
 
             if self.target != None and action == True:
+                self.aff_pub_center_pcl.publish(aff_map)
                 self._sas.set_succeeded()
             else:
-                _ = self.go_45()
+                _ = self.go_view(45)
                 self._sas.set_aborted()
 
 
