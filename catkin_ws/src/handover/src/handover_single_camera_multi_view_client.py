@@ -69,7 +69,7 @@ def multi_view_grasp(loop):
 
             smach.StateMachine.add('Multi-view Detect',
                                 smach_ros.SimpleActionState('handover_action', TestAction,
-                                goal = TestGoal(goal=9)),
+                                goal = TestGoal(goal=10)),
                                 {'succeeded':'Go target','aborted':'Multi-view Detect'})
 
             smach.StateMachine.add('Go target',

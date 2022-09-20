@@ -233,12 +233,14 @@ class HandoverServer:
             elif view_id == 4:
                 view_id = 3
             elif view_id == 2:
-                if abs(abs(DIF[0]) - abs(min_width)) < abs(abs(DIF[2]) - abs(min_width)):
+                if abs(abs(DIF[0]) - abs(min_width)) < abs(abs(DIF[4]) - abs(min_width)):
                     view_id = 1
                 else:
                     view_id = 3
 
         return view_id
+
+    
 
     def msg2cv(self, c, d):
         try:
@@ -584,6 +586,83 @@ class HandoverServer:
                 action = self.go_0()
 
             time.sleep(0.7)
+
+            c, d = self.msg2cv(self.color_r, self.depth_r)
+            self.target, aff_map, self.dis, self.angle = self.single_pred(c, d,'right_arm')
+
+            self.aff_pub_center_pcl.publish(aff_map)
+
+            if self.target != None and action == True:
+                self._sas.set_succeeded()
+            else:
+                _ = self.go_45()
+                self._sas.set_aborted()
+
+        elif msg.goal == 10:
+            # 90
+            self.go_90()
+            rospy.sleep(0.5)
+            cv_r, d_r = self.msg2cv(self.color_r, self.depth_r)
+            _, _, angle, center = self.pred.predict(cv_r, d_r, 'right_arm', True)
+            dif90 = width_detect(d_r, center, 0)
+            self.go_45()
+            rospy.sleep(0.5)
+            # 67
+            self.go_67()
+            rospy.sleep(0.5)
+            cv_r, d_r = self.msg2cv(self.color_r, self.depth_r)
+            _, _, angle, center = self.pred.predict(cv_r, d_r, 'right_arm', True)
+            # _, _, _, angle, center = self.single_pred(cv_r, d_r, 'right_arm')
+            dif67 = width_detect(d_r, center, 0)
+            self.go_45()
+            rospy.sleep(0.5)
+
+            # 45
+            cv_r, d_r = self.msg2cv(self.color_r, self.depth_r)
+            _, _, angle, center = self.pred.predict(cv_r, d_r, 'right_arm', True)
+            dif45 = width_detect(d_r, center, 0)
+            rospy.sleep(0.5)
+            # 22
+            self.go_22()
+            rospy.sleep(0.5)
+            cv_r, d_r = self.msg2cv(self.color_r, self.depth_r)
+            _, _, angle, center = self.pred.predict(cv_r, d_r, 'right_arm', True)
+            dif22 = width_detect(d_r, center, 0)
+            self.go_45()
+            rospy.sleep(0.5)
+            # 0
+            self.go_0()
+            rospy.sleep(0.5)
+            cv_r, d_r = self.msg2cv(self.color_r, self.depth_r)
+            _, _, angle, center = self.pred.predict(cv_r, d_r, 'right_arm', True)
+            dif0 = width_detect(d_r, center, 0)
+            self.go_45()
+
+            DIF = [dif90, dif67, dif45, dif22, dif0]
+            print(DIF)
+            self.VIEW = DIF.index(min(DIF))
+
+            if self.VIEW == 0:
+                if DIF[2] < -10:
+                    self.VIEW = 1
+
+            if self.VIEW == 0:
+                # 90
+                action = self.go_90()
+            elif self.VIEW == 1:
+                # 67
+                action = self.go_67()
+            elif self.VIEW == 2:
+                # 45
+                action = self.go_45()
+            elif self.VIEW == 3:
+                # 22
+                action = self.go_22()
+            elif self.VIEW == 4:
+                # 0
+                action = self.go_0()
+
+            time.sleep(1)
 
             c, d = self.msg2cv(self.color_r, self.depth_r)
             self.target, aff_map, self.dis, self.angle = self.single_pred(c, d,'right_arm')
