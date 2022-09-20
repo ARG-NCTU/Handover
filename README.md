@@ -21,7 +21,7 @@ $ docker pull argnctu/handover_system:gpu
 ```
 On NUC
 ```
-$ docker pull argnctu/handover_system
+$ docker pull argnctu/handover_system:nuc
 ```
 
 ## Start Docker
