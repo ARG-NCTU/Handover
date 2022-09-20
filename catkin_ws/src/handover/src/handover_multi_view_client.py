@@ -79,7 +79,7 @@ def multi_view_grasp(loop):
 
             smach.StateMachine.add('forward',
                                 smach_ros.SimpleActionState('handover_action', TestAction,
-                                goal = TestGoal(goal=8)),
+                                goal = TestGoal(goal=7)),
                                 {'succeeded':'wait object','aborted':'wait object'})
 
             smach.StateMachine.add('wait object',
