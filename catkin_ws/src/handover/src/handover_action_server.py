@@ -55,6 +55,7 @@ class HandoverServer:
         self.aff_map = None
         self.pred = Affordance_predict(self.arm, info.P[0], info.P[5], info.P[2], info.P[6])
         self.VIEW = None
+        self.angle =None
         self.led_state = 0
         
         # Subscriber:
@@ -79,18 +80,16 @@ class HandoverServer:
         self.aff_pub_center_pcl = rospy.Publisher("~affordance_map", Image, queue_size=10)
         self.pose_pub_right = rospy.Publisher("~pose_right", Pose, queue_size=10)
         self.pose_pub_left = rospy.Publisher("~pose_left", Pose, queue_size=10)
-
-        self.angle =None
-
+        # Led
         self.LED_state = rospy.Publisher("/handover_server/led_state", Int16, queue_size=10)
 
         # Service
         rospy.Service('~switch_loop', Trigger, self.switch_loop)
 
+        # Initialize
         self.go_view(45)
 
         rospy.loginfo("Server Initial Complete")
-
 
         """
         goal = 0 : Init
