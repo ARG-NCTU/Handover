@@ -1,4 +1,4 @@
 <?xml version="1.0" ?>
 <launch>
-	<node pkg="robotiq_ft_sensor" type="rq_sensor" args="/dev/ttyUSB2" name="robotiq_ft_wrench" output="screen"/>
+	<node pkg="robotiq_ft_sensor" type="rq_sensor" args="/dev/ttyUSB1" name="robotiq_ft_wrench" output="screen"/>
 </launch>

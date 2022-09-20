@@ -82,7 +82,7 @@ class HandoverServer:
 
         self.angle =None
 
-        self.LED_state = rospy.Publisher("~led_state", Int16, queue_size=10)
+        self.LED_state = rospy.Publisher("/handover_server/led_state", Int16, queue_size=10)
 
         # Service
         rospy.Service('~switch_loop', Trigger, self.switch_loop)
@@ -122,57 +122,12 @@ class HandoverServer:
 
     def go_view(self, angle):
         try:
-            go_pose = rospy.ServiceProxy("/{0}/multi_view_{0}".format('right_arm',str(angle)), Trigger)
+            go_pose = rospy.ServiceProxy("/{0}/multi_view_{1}".format('right_arm',str(angle)), Trigger)
             resp = go_pose(self.r)
             return True
         except rospy.ServiceException as exc:
             print("service did not process request: " + str(exc))
             return True
-
-    # def go_90(self):
-    #     try:
-    #         go_pose = rospy.ServiceProxy("/{0}/multi_view_90".format('right_arm'), Trigger)
-    #         resp = go_pose(self.r)
-    #         return True
-    #     except rospy.ServiceException as exc:
-    #         print("service did not process request: " + str(exc))
-    #         return True
-
-    # def go_67(self):
-    #     try:
-    #         go_pose = rospy.ServiceProxy("/{0}/multi_view_67".format('right_arm'), Trigger)
-    #         resp = go_pose(self.r)
-    #         return True
-    #     except rospy.ServiceException as exc:
-    #         print("service did not process request: " + str(exc))
-    #         return False
-
-    # def go_45(self):
-    #     try:
-    #         go_pose = rospy.ServiceProxy("/{0}/go_handover".format('right_arm'), Trigger)
-    #         resp = go_pose(self.r)
-    #         return True
-    #     except rospy.ServiceException as exc:
-    #         print("service did not process request: " + str(exc))
-    #         return False
-
-    # def go_22(self):
-    #     try:
-    #         go_pose = rospy.ServiceProxy("/{0}/multi_view_22".format('right_arm'), Trigger)
-    #         resp = go_pose(self.r)
-    #         return True
-    #     except rospy.ServiceException as exc:
-    #         print("service did not process request: " + str(exc))
-    #         return False
-
-    # def go_0(self):
-    #     try:
-    #         go_pose = rospy.ServiceProxy("/{0}/multi_view_0".format('right_arm'), Trigger)
-    #         resp = go_pose(self.r)
-    #         return True
-    #     except rospy.ServiceException as exc:
-    #         print("service did not process request: " + str(exc))
-    #         return False
 
     def open_gripper(self):
         try:
@@ -322,22 +277,6 @@ class HandoverServer:
 
             action = self.go_view(self.view_list[self.VIEW ])
 
-            # if self.VIEW == 0:
-            #     # 90
-            #     action = self.go_view(90)
-            # elif self.VIEW == 1:
-            #     # 67
-            #     action = self.go_view(67)
-            # elif self.VIEW == 2:
-            #     # 45
-            #     action = self.go_view(45)
-            # elif self.VIEW == 3:
-            #     # 22
-            #     action = self.go_view(22)
-            # elif self.VIEW == 4:
-            #     # 0
-            #     action = self.go_view(0)
-
             time.sleep(1)
 
             c, d = self.msg2cv(self.color_r, self.depth_r)
@@ -356,36 +295,6 @@ class HandoverServer:
             rospy.loginfo('Go Target...')
 
             action = self.go_target()
-
-            # ---------------- Waypoint ---------------- 
-            # listener = TransformListener()
-            # transformer = TransformerROS()
-            # listener.waitForTransform('right_arm/base_link', 'right_arm/ee_arm_link', rospy.Time(0), rospy.Duration(1.0))
-            # (trans, rot) = listener.lookupTransform('right_arm/base_link', 'right_arm/ee_arm_link', rospy.Time(0))
-            # c_pose = ee_poseRequest()
-            # c_pose.target_pose.position.x = trans[0]
-            # c_pose.target_pose.position.y = trans[1]
-            # c_pose.target_pose.position.z = trans[2]
-
-            # c_pose_list = [trans[0], trans[1], trans[2], rot[0], rot[1], rot[2], rot[3]]
-            # targetpose_list = [self.target.target_pose.position.x, self.target.target_pose.position.y, self.target.target_pose.position.z, self.target.target_pose.orientation.x, self.target.target_pose.orientation.y, self.target.target_pose.orientation.z, self.target.target_pose.orientation.w]
-            # waypoint_list = waypoint(c_pose_list, targetpose_list)
-
-            # for sub_pose in waypoint_list:
-            #     goal_pose = ee_poseRequest()
-            #     goal_pose.target_pose.position.x = sub_pose[0]
-            #     goal_pose.target_pose.position.y = sub_pose[1]
-            #     goal_pose.target_pose.position.z = sub_pose[2]
-            #     goal_pose.target_pose.orientation.x = sub_pose[3]
-            #     goal_pose.target_pose.orientation.y = sub_pose[4]
-            #     goal_pose.target_pose.orientation.z = sub_pose[5]
-            #     goal_pose.target_pose.orientation.w = sub_pose[6]
-
-            #     self.target = go_pose
-
-            #     action = self.go_target()
-            # ---------------- Waypoint ----------------
-
             stop = self.get_pose()
 
             if round(stop.target_pose.position.x,2) == round(start.target_pose.position.x,2):
@@ -414,13 +323,14 @@ class HandoverServer:
             action_3 = self.open_gripper()
             
             if action_1 == True and action_2 == True and action_3 == True:
+                MSG = Int16()
+                MSG.data = 0
+                self.LED_state.publish(MSG)
                 self._sas.set_succeeded()
             else:
                 self._sas.set_aborted()
 
-            MSG = Int16()
-            MSG.data = 0
-            self.LED_state.publish(MSG)
+            
 
         # Check distance
         elif msg.goal == 4:
@@ -450,9 +360,6 @@ class HandoverServer:
 
         # Wait object
         elif msg.goal == 5:
-            MSG = Int16()
-            MSG.data = 2
-            self.LED_state.publish(MSG)
             rospy.sleep(1)
             x = self.f_x
             while True:
@@ -475,6 +382,9 @@ class HandoverServer:
 
         # User actively give
         elif msg.goal == 7:
+            MSG = Int16()
+            MSG.data = 2
+            self.LED_state.publish(MSG)
             for _ in range(2-self.count):
                 try:
                     go_pose = rospy.ServiceProxy("/{0}/forward".format('right_arm'), Trigger)
@@ -566,45 +476,7 @@ class HandoverServer:
                 DIF.append(width_detect(d_r, center, 0))
                 if i != 2:
                     self.go_view(45)
-            # # 90
-            # self.go_view(90)
-            # rospy.sleep(0.5)
-            # cv_r, d_r = self.msg2cv(self.color_r, self.depth_r)
-            # _, _, angle, center = self.pred.predict(cv_r, d_r, 'right_arm', True)
-            # dif90 = width_detect(d_r, center, 0)
-            # self.go_view(45)
-            # rospy.sleep(0.5)
-            # # 67
-            # self.go_view(67)
-            # rospy.sleep(0.5)
-            # cv_r, d_r = self.msg2cv(self.color_r, self.depth_r)
-            # _, _, angle, center = self.pred.predict(cv_r, d_r, 'right_arm', True)
-            # dif67 = width_detect(d_r, center, 0)
-            # self.go_view(45)
-            # rospy.sleep(0.5)
 
-            # # 45
-            # cv_r, d_r = self.msg2cv(self.color_r, self.depth_r)
-            # _, _, angle, center = self.pred.predict(cv_r, d_r, 'right_arm', True)
-            # dif45 = width_detect(d_r, center, 0)
-            # rospy.sleep(0.5)
-            # # 22
-            # self.go_view(22)
-            # rospy.sleep(0.5)
-            # cv_r, d_r = self.msg2cv(self.color_r, self.depth_r)
-            # _, _, angle, center = self.pred.predict(cv_r, d_r, 'right_arm', True)
-            # dif22 = width_detect(d_r, center, 0)
-            # self.go_view(45)
-            # rospy.sleep(0.5)
-            # # 0
-            # self.go_view(0)
-            # rospy.sleep(0.5)
-            # cv_r, d_r = self.msg2cv(self.color_r, self.depth_r)
-            # _, _, angle, center = self.pred.predict(cv_r, d_r, 'right_arm', True)
-            # dif0 = width_detect(d_r, center, 0)
-            # self.go_view(45)
-
-            # DIF = [dif90, dif67, dif45, dif22, dif0]
             print(DIF)
             self.VIEW = DIF.index(min(DIF))
 
@@ -614,37 +486,17 @@ class HandoverServer:
 
             action = self.go_view(self.view_list[self.VIEW])
 
-            # if self.VIEW == 0:
-            #     # 90
-            #     action = self.go_90()
-            # elif self.VIEW == 1:
-            #     # 67
-            #     action = self.go_67()
-            # elif self.VIEW == 2:
-            #     # 45
-            #     action = self.go_45()
-            # elif self.VIEW == 3:
-            #     # 22
-            #     action = self.go_22()
-            # elif self.VIEW == 4:
-            #     # 0
-            #     action = self.go_0()
-
             time.sleep(1)
 
             c, d = self.msg2cv(self.color_r, self.depth_r)
             self.target, aff_map, self.dis, self.angle = self.single_pred(c, d,'right_arm')
-
             
-
             if self.target != None and action == True:
                 self.aff_pub_center_pcl.publish(aff_map)
                 self._sas.set_succeeded()
             else:
                 _ = self.go_view(45)
                 self._sas.set_aborted()
-
-
 
 
     def onShutdown(self):
