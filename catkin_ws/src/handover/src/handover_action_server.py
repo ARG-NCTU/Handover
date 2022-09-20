@@ -59,8 +59,11 @@ class HandoverServer:
         self.led_state = 0
         
         # Subscriber:
+        
+        # force sensor
         self.force = rospy.Subscriber("/robotiq_ft_wrench", WrenchStamped, self.callback_force_msgs)
-
+        
+        # cameras
         self.color_sub_r = message_filters.Subscriber('/camera_right/color/image_raw/compressed', CompressedImage)
         self.depth_sub_r = message_filters.Subscriber('/camera_right/aligned_depth_to_color/image_raw', Image)
         self.color_sub_l = message_filters.Subscriber('/camera_left/color/image_raw/compressed', CompressedImage)
