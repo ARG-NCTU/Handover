@@ -4,18 +4,24 @@
     <include file="$(find realsense2_camera)/launch/rs_rgbd.launch">
             <arg name="serial_no"           default="832112073381"/>
             <arg name="camera"              default="camera_left"/>
+            <arg name="depth_fps"           default="15"/>
+            <arg name="color_fps"           default="15"/>
     </include>
 
     <!-- connect right camera -->
     <include file="$(find realsense2_camera)/launch/rs_rgbd.launch">
             <arg name="serial_no"           default="937622072048"/>
             <arg name="camera"              default="camera_right"/>
+            <arg name="depth_fps"           default="15"/>
+            <arg name="color_fps"           default="15"/>
     </include>
 
      <!-- connect mid camera -->
     <include file="$(find realsense2_camera)/launch/rs_rgbd.launch">
             <arg name="serial_no"           default="934222071319"/>
             <arg name="camera"              default="camera_mid"/>
+            <arg name="depth_fps"           default="15"/>
+            <arg name="color_fps"           default="15"/>
     </include>
     
     <node pkg="tf" type="static_transform_publisher" name="calibrate_link_right" 

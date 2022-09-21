@@ -73,6 +73,7 @@ RUN apt-get -o Acquire::ForceIPv4=true update && apt-get -o Acquire::ForceIPv4=t
     ros-$ROS_DISTRO-smach-viewer \
     ros-$ROS_DISTRO-roboticsgroup-upatras-gazebo-plugins \
     ros-$ROS_DISTRO-apriltag-ros \
+    ros-$ROS_DISTRO-rosbridge-server \
     python-rosdep \
     python-rosinstall \
     python-rosinstall-generator \
