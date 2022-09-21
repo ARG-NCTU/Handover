@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- connect left camera -->
+    <include file="$(find realsense2_camera)/launch/rs_rgbd.launch">
+            <arg name="serial_no"           default="832112073381"/>
+            <arg name="camera"              default="camera_left"/>
+    </include>
+
+    <!-- connect right camera -->
+    <include file="$(find realsense2_camera)/launch/rs_rgbd.launch">
+            <arg name="serial_no"           default="937622072048"/>
+            <arg name="camera"              default="camera_right"/>
+    </include>
+
+     <!-- connect mid camera -->
+    <include file="$(find realsense2_camera)/launch/rs_rgbd.launch">
+            <arg name="serial_no"           default="934222071319"/>
+            <arg name="camera"              default="camera_mid"/>
+    </include>
+    
+    <node pkg="tf" type="static_transform_publisher" name="calibrate_link_right" 
+        args="-0.047 0 0.085 0 0.199 0 0.980 right_arm/ee_arm_link camera_right_link 100" />
+
+    <node pkg="tf" type="static_transform_publisher" name="cam_2_cam" 
+        args="0.677 -0.839 -0.018 0 0 0.707 0.707 camera_mid_link camera_left_link 100" />
+
+    <include file="$(find rosbridge_server)/launch/rosbridge_websocket.launch"/>
+
+    <!-- <include file="$(find hand_eye_calibration)/launch/auscultation_point.launch"/> -->
+
+    <node name="dynparam_node1" pkg="dynamic_reconfigure" type="dynparam" args="set_from_parameters camera_left/aligned_depth_to_color/image_raw/compressedDepth">
+        <param name="png_level" type="int" value="4" />
+    </node>
+
+    <node name="dynparam_node2" pkg="dynamic_reconfigure" type="dynparam" args="set_from_parameters camera_mid/aligned_depth_to_color/image_raw/compressedDepth">
+        <param name="png_level" type="int" value="4" />
+    </node>
+
+    <node name="dynparam_node3" pkg="dynamic_reconfigure" type="dynparam" args="set_from_parameters camera_right/aligned_depth_to_color/image_raw/compressedDepth">
+        <param name="png_level" type="int" value="4" />
+    </node>
+
+</launch>
