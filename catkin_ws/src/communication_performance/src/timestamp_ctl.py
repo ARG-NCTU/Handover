@@ -7,11 +7,11 @@ from std_msgs.msg import Bool, Int32, Int16, Float64
 
 class timestamp_test():
     def __init__(self):
-        rospy.Subscriber('/publish_topic', Float64, self.timestamp_callback, queue_size=1000)
-        self.timestamp_pub = rospy.Publisher('/subscribe_topic', Float64, queue_size=1000)
+        rospy.Subscriber('/publish_topic', Twist, self.timestamp_callback, queue_size=1000)
+        self.timestamp_pub = rospy.Publisher('/subscribe_topic', Twist, queue_size=1000)
 
         # self.timestamp_msg = TwistStamped()
-
+        
     def timestamp_callback(self, msg):
         self.timestamp_pub.publish(msg)
 
